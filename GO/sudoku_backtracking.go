@@ -49,9 +49,9 @@ func solve(grille *[TAILLE][TAILLE]int, ligne int, colonne int) bool {
 
 	} else {
 		for k := 1; k <= TAILLE; k++ {
-			if (absentSurBlock(k, *grille, ligne, colonne) && absentSurColonne(k, *grille, colonne) && absentSurLigne(k, *grille, ligne)) == true {
+			if absentSurBlock(k, *grille, ligne, colonne) && absentSurColonne(k, *grille, colonne) && absentSurLigne(k, *grille, ligne) {
 				(*grille)[ligne][colonne] = k
-				if solve(grille, ligne, colonne+1) == true {
+				if solve(grille, ligne, colonne+1) {
 					return true
 				}
 				(*grille)[ligne][colonne] = 0
