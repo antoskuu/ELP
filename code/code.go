@@ -57,7 +57,7 @@ func main() {
 	}
 
 	afficheSudoku(grilleSudoku, 9)
-	if respecteRegles(grilleSudoku, 9, 0, 2, 9) == true {
+	if respecteRegles(grilleSudoku, 9, 0, 2, 9) == true { //c'est juste un test
 		fmt.Printf("ca marche ca")
 	} else {
 		fmt.Printf("noooon")
