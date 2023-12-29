@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-func afficheSudoku(grille [9][9]int) {
-	var n = 9
+func afficheSudoku(grille [][]int, n int) { //n est la taille du tableau
+
 	for i := 0; i < n; i++ {
 		for j := 0; j < n; j++ {
 			fmt.Printf("%2d ", grille[i][j])
@@ -11,8 +11,14 @@ func afficheSudoku(grille [9][9]int) {
 		fmt.Println()
 	}
 }
-func respecteRegles(grille [9][9]int, test, i, j int) bool {
-	var n = 9
+func respecteRegles(grille [][]int, test, i, j, n int) bool {
+	/*
+		test=valeur qu'on regarde si elle respecte;
+		i=coordonnée ligne dans le tableau;
+		j= coord colonne dans le tableau;
+		n= taille du tableau (9 pour un 9x9)
+	*/
+
 	for colonne := 0; colonne < n; colonne++ {
 		if grille[i][colonne] == test {
 			return false
@@ -35,9 +41,10 @@ func respecteRegles(grille [9][9]int, test, i, j int) bool {
 	}
 	return true
 }
+
 func main() {
 
-	grilleSudoku := [9][9]int{
+	grilleSudoku := [][]int{
 		{5, 3, 0, 0, 7, 0, 0, 0, 0},
 		{6, 0, 0, 1, 9, 5, 0, 0, 0},
 		{0, 9, 8, 0, 0, 0, 0, 6, 0},
@@ -49,8 +56,8 @@ func main() {
 		{0, 0, 0, 0, 8, 0, 0, 7, 9},
 	}
 
-	afficheSudoku(grilleSudoku)
-	if respecteRegles(grilleSudoku, 9, 0, 2) == true {
+	afficheSudoku(grilleSudoku, 9)
+	if respecteRegles(grilleSudoku, 9, 0, 2, 9) == true {
 		fmt.Printf("ca marche ca")
 	} else {
 		fmt.Printf("noooon")
