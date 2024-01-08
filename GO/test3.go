@@ -1,9 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 const TAILLE = 9
 const TAILLE_BLOCK = 3
+
+var wg sync.WaitGroup
+var mutex sync.Mutex
 
 func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	for colonne := 0; colonne < TAILLE; colonne++ {
@@ -48,30 +54,43 @@ func solve(grille *[TAILLE][TAILLE]int, ligne int, colonne int) bool {
 		return solve(grille, ligne, colonne+1)
 
 	} else {
+
 		for k := 1; k <= TAILLE; k++ {
-			if absentSurBlock(k, *grille, ligne, colonne) && absentSurColonne(k, *grille, colonne) && absentSurLigne(k, *grille, ligne) {
-				(*grille)[ligne][colonne] = k
-				if solve(grille, ligne, colonne+1) {
-					return true
+			wg.Add(1)
+			go func(k int) {
+				defer wg.Done()
+				if absentSurBlock(k, *grille, ligne, colonne) && absentSurColonne(k, *grille, colonne) && absentSurLigne(k, *grille, ligne) {
+					mutex.Lock()
+					(*grille)[ligne][colonne] = k
+					mutex.Unlock()
+
+					if solve(grille, ligne, colonne+1) {
+						return
+					}
+
+					mutex.Lock()
+					(*grille)[ligne][colonne] = 0
+					mutex.Unlock()
 				}
-				(*grille)[ligne][colonne] = 0
-			}
+			}(k)
 		}
+
+		wg.Wait()
 		return false
 	}
 }
 
 func main() {
 	grille := [TAILLE][TAILLE]int{
-		{0, 0, 8, 0, 0, 4, 0, 9, 0},
-		{0, 7, 0, 1, 0, 0, 5, 0, 0},
-		{5, 0, 0, 0, 6, 0, 0, 0, 3},
-		{1, 0, 0, 0, 4, 0, 0, 0, 8},
-		{0, 8, 0, 0, 0, 0, 7, 0, 0},
-		{0, 0, 2, 0, 0, 0, 0, 1, 0},
-		{0, 6, 0, 2, 0, 0, 0, 0, 0},
-		{3, 0, 0, 0, 8, 0, 0, 0, 5},
-		{0, 0, 7, 0, 0, 9, 0, 4, 0},
+		{0, 0, 7, 0, 3, 0, 5, 0, 0},
+		{3, 6, 0, 0, 0, 0, 0, 4, 1},
+		{0, 0, 0, 4, 1, 6, 0, 0, 0},
+		{0, 0, 0, 2, 8, 7, 0, 0, 0},
+		{0, 9, 0, 0, 0, 0, 0, 1, 0},
+		{0, 8, 0, 0, 0, 0, 0, 5, 0},
+		{0, 0, 4, 0, 0, 0, 3, 0, 0},
+		{0, 0, 2, 0, 0, 0, 8, 0, 0},
+		{0, 0, 0, 3, 9, 8, 0, 0, 0},
 	}
 
 	fmt.Printf("Avant la modification : \n")
