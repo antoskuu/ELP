@@ -48,7 +48,7 @@ func jeSaisPas(grille [][]int, n, colonne, ligne, test int) {
 		if respecteRegles(grille, test, ligne, colonne, n) {
 			grille[ligne][colonne] = test
 		} else {
-			jeSaisPas()
+			jeSaisPas(grille[][] int, )
 		}
 	}
 

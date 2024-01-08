@@ -10,6 +10,16 @@ const TAILLE_BLOCK = 3
 
 var wg sync.WaitGroup
 
+func afficheSudoku(grille [9][9]int, n int) { //n est la taille du tableau
+
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			fmt.Printf("%2d ", grille[i][j])
+		}
+		fmt.Println()
+	}
+}
+
 func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	for colonne := 0; colonne < TAILLE; colonne++ {
 		if grille[ligne][colonne] == k {
@@ -43,7 +53,9 @@ func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) b
 }
 
 func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, wg *sync.WaitGroup) ([TAILLE][TAILLE]int, bool) {
+
 	if ligne == TAILLE {
+
 		return grille, true
 
 	} else if colonne == TAILLE {
@@ -59,6 +71,7 @@ func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, wg *sync.WaitGrou
 				nouvelle_grille, solution := solve(grille, ligne, colonne+1, wg)
 				if solution {
 					return nouvelle_grille, true
+
 				}
 				grille[ligne][colonne] = 0
 			}
@@ -68,14 +81,18 @@ func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, wg *sync.WaitGrou
 }
 
 func solvesudokupartial(grille [TAILLE][TAILLE]int, ligne int, colonne int, value int, wg *sync.WaitGroup) {
+
+	var grille2 [TAILLE][TAILLE]int
 	defer wg.Done()
 	grille[ligne][colonne] = value
-	_, solution := solve(grille, 0, 0, wg)
+	grille2, solution := solve(grille, 0, 0, wg)
 	if solution {
 		fmt.Printf("Solution pour : %d\n", value)
+		afficheSudoku(grille2, TAILLE)
 	} else {
 		fmt.Printf("Pas de solution pour : %d\n", value)
 	}
+
 }
 
 func solve_para(grille [TAILLE][TAILLE]int, ligne int, colonne int) {
@@ -108,6 +125,7 @@ func main() {
 	}
 
 	solve_para(grille, 0, 0)
+
 	//nouvelle_grille, solution := solve(grille, 0, 0)
 
 	//if solution {
