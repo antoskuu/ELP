@@ -44,6 +44,10 @@ func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) b
 
 func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, wg *sync.WaitGroup) ([TAILLE][TAILLE]int, bool) {
 	if ligne == TAILLE {
+		fmt.Printf("\nAprès la modification : \n")
+		for _, ligne := range grille {
+			fmt.Println(ligne)
+		}
 		return grille, true
 
 	} else if colonne == TAILLE {
