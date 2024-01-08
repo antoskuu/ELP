@@ -42,6 +42,34 @@ func respecteRegles(grille [][]int, test, i, j, n int) bool {
 	return true
 }
 
+func jeSaisPas(grille [][]int, n, colonne, ligne, test int) {
+	if grille[ligne][colonne] == 0 {
+
+		if respecteRegles(grille, test, ligne, colonne, n) {
+			grille[ligne][colonne] = test
+		} else {
+			jeSaisPas()
+		}
+	}
+
+}
+
+func resolution(grille [][]int, n int) { //fonction resolution backtracking sans parallelisme et sans opti
+	var grilleRes [][]int
+	grilleRes = grille
+	var ligne = 0
+	var colonne = 0
+	var test = 1
+
+	if grille[ligne][colonne] == 0 {
+
+		if respecteRegles(grille, test, ligne, colonne, n) {
+			grille[ligne][colonne] = test
+		} else {
+		}
+	}
+}
+
 func main() {
 
 	grilleSudoku := [][]int{
