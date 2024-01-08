@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 const TAILLE = 9
 const TAILLE_BLOCK = 3
@@ -50,10 +53,12 @@ func solve(grille *[TAILLE][TAILLE]int, ligne int, colonne int) bool {
 	} else {
 		for k := 1; k <= TAILLE; k++ {
 			if absentSurBlock(k, *grille, ligne, colonne) && absentSurColonne(k, *grille, colonne) && absentSurLigne(k, *grille, ligne) {
+
 				(*grille)[ligne][colonne] = k
 				if solve(grille, ligne, colonne+1) {
 					return true
 				}
+
 				(*grille)[ligne][colonne] = 0
 			}
 		}
@@ -79,13 +84,17 @@ func main() {
 		fmt.Println(ligne)
 	}
 
+	// Mesurer le temps
+	start := time.Now()
+
 	if solve(&grille, 0, 0) {
+		elapsed := time.Since(start)
 		fmt.Printf("\nAprès la modification : \n")
 		for _, ligne := range grille {
 			fmt.Println(ligne)
 		}
+		fmt.Printf("\nTemps pris pour résoudre : %s\n", elapsed)
 	} else {
 		fmt.Printf("\nErreur pas de solution")
 	}
-
 }
