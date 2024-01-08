@@ -75,7 +75,7 @@ func solvesudokupartial(grille [TAILLE][TAILLE]int, ligne int, colonne int, valu
 	defer wg.Done()
 	grille[ligne][colonne] = value
 	_, solution := solve(grille, 0, 0, wg)
-	if solution == false {
+	if solution {
 		fmt.Printf("\nSolution pour : %d\n", value)
 	} else {
 		fmt.Printf("\nPas de solution pour : %d\n", value)
@@ -86,6 +86,7 @@ func solve_para(grille [TAILLE][TAILLE]int, ligne int, colonne int) {
 	for k := 1; k <= TAILLE; k++ {
 		if absentSurBlock(k, grille, ligne, colonne) && absentSurColonne(k, grille, colonne) && absentSurLigne(k, grille, ligne) {
 			wg.Add(1)
+			print("START")
 			go solvesudokupartial(grille, ligne, colonne, k, &wg)
 
 		}
