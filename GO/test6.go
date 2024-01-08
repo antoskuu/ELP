@@ -75,10 +75,10 @@ func solvesudokupartial(grille [TAILLE][TAILLE]int, ligne int, colonne int, valu
 	defer wg.Done()
 	grille[ligne][colonne] = value
 	_, solution := solve(grille, 0, 0, wg)
-	if solution {
-		fmt.Printf("Solution pour : %d\n", value)
+	if solution == false {
+		fmt.Printf("\nSolution pour : %d\n", value)
 	} else {
-		fmt.Printf("Pas de solution pour : %d\n", value)
+		fmt.Printf("\nPas de solution pour : %d\n", value)
 	}
 }
 
