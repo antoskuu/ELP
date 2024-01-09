@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-const TAILLE = 16
-const TAILLE_BLOCK = 9
+const TAILLE = 9
+const TAILLE_BLOCK = 3
 
 func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	for colonne := 0; colonne < TAILLE; colonne++ {
@@ -64,22 +64,15 @@ func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int) ([TAILLE][TAILLE]
 
 func main() {
 	grille := [TAILLE][TAILLE]int{
-		{0, 7, 0, 14, 0, 0, 15, 0, 3, 11, 2, 8, 5, 10, 0, 0},
-		{13, 0, 0, 10, 9, 0, 16, 0, 0, 0, 0, 6, 7, 8, 0, 0},
-		{0, 6, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 1, 11, 3},
-		{0, 0, 3, 1, 0, 12, 0, 0, 0, 15, 0, 0, 14, 6, 9, 0},
-		{0, 0, 0, 3, 0, 8, 9, 10, 12, 0, 0, 16, 0, 0, 0, 14},
-		{0, 0, 0, 0, 0, 0, 0, 13, 7, 8, 0, 15, 0, 12, 1, 6},
-		{0, 0, 0, 16, 14, 0, 0, 0, 0, 0, 11, 0, 0, 9, 15, 0},
-		{6, 13, 0, 0, 0, 11, 7, 0, 0, 2, 14, 0, 16, 3, 5, 0},
-		{11, 0, 0, 5, 4, 14, 0, 0, 13, 0, 9, 0, 0, 0, 0, 0},
-		{0, 0, 0, 12, 2, 10, 0, 9, 0, 1, 16, 5, 0, 14, 0, 7},
-		{15, 9, 0, 0, 6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 13, 4},
-		{10, 0, 0, 0, 7, 0, 0, 0, 0, 0, 4, 0, 0, 11, 0, 0},
-		{12, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 5, 8, 0},
-		{8, 10, 0, 0, 0, 0, 0, 0, 0, 6, 12, 7, 0, 16, 0, 0},
-		{7, 16, 15, 0, 11, 0, 8, 0, 0, 0, 0, 10, 0, 13, 0, 0},
-		{14, 0, 1, 4, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 4, 0, 0, 9, 0, 0, 6},
+		{0, 7, 0, 1, 0, 0, 8, 0, 0},
+		{3, 0, 0, 0, 7, 0, 0, 5, 0},
+		{7, 0, 0, 0, 3, 0, 0, 9, 0},
+		{0, 0, 6, 0, 0, 1, 0, 0, 4},
+		{0, 0, 0, 5, 0, 0, 2, 0, 0},
+		{9, 0, 0, 0, 8, 0, 0, 0, 0},
+		{0, 1, 0, 9, 0, 0, 0, 0, 0},
+		{0, 0, 8, 0, 0, 2, 3, 0, 0},
 	}
 
 	fmt.Printf("Avant la modification : \n")
@@ -87,9 +80,9 @@ func main() {
 		fmt.Println(ligne)
 	}
 
-	nouvelle_grille, solution := solve(grille, 0, 0)
+	nouvelle_grille, sol := solve(grille, 0, 0)
 
-	if solution {
+	if sol {
 		fmt.Printf("\nAprès la modification : \n")
 		for _, ligne := range nouvelle_grille {
 			fmt.Println(ligne)

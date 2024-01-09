@@ -85,26 +85,46 @@ func solvesudokupartial(grille [TAILLE][TAILLE]int, ligne int, colonne int, valu
 func solve_para(grille [TAILLE][TAILLE]int, ligne int, colonne int) {
 	for k := 1; k <= TAILLE; k++ {
 		if absentSurBlock(k, grille, ligne, colonne) && absentSurColonne(k, grille, colonne) && absentSurLigne(k, grille, ligne) {
-			wg.Add(1)
-			print("START")
-			go solvesudokupartial(grille, ligne, colonne, k, &wg)
+			fmt.Printf("\n%d\n", k)
+			grille[ligne][colonne] = k
+			for l := 1; l <= TAILLE; l++ {
+				if absentSurBlock(l, grille, ligne, colonne+1) && absentSurColonne(l, grille, colonne+1) && absentSurLigne(l, grille, ligne) {
+					grille[ligne][colonne+1] = l
+					for m := 1; m <= TAILLE; m++ {
+						if absentSurBlock(m, grille, ligne, colonne+3) && absentSurColonne(m, grille, colonne+3) && absentSurLigne(m, grille, ligne) {
+							grille[ligne][colonne+3] = m
+							for n := 1; n <= TAILLE; n++ {
+								if absentSurBlock(n, grille, ligne, colonne+4) && absentSurColonne(n, grille, colonne+4) && absentSurLigne(n, grille, ligne) {
+									wg.Add(1)
+									fmt.Printf("\nSTART %d %d %d %d", k, l, m, n)
+									go solvesudokupartial(grille, ligne, colonne+5, n, &wg)
+									grille[ligne][colonne+4] = 0
+								}
+							}
+						}
+						grille[ligne][colonne+3] = 0
+					}
+				}
+				grille[ligne][colonne+1] = 0
+			}
 
 		}
+		grille[ligne][colonne] = 0
 	}
 	wg.Wait()
 }
 
 func main() {
 	grille := [TAILLE][TAILLE]int{
-		{0, 0, 8, 0, 0, 4, 0, 9, 0},
-		{0, 7, 0, 1, 0, 0, 5, 0, 0},
-		{5, 0, 0, 0, 6, 0, 0, 0, 3},
-		{1, 0, 0, 0, 4, 0, 0, 0, 8},
-		{0, 8, 0, 0, 0, 0, 7, 0, 0},
-		{0, 0, 2, 0, 0, 0, 0, 1, 0},
-		{0, 6, 0, 2, 0, 0, 0, 0, 0},
-		{3, 0, 0, 0, 8, 0, 0, 0, 5},
-		{0, 0, 7, 0, 0, 9, 0, 4, 0},
+		{0, 0, 4, 0, 0, 9, 0, 0, 6},
+		{0, 7, 0, 1, 0, 0, 8, 0, 0},
+		{3, 0, 0, 0, 7, 0, 0, 5, 0},
+		{7, 0, 0, 0, 3, 0, 0, 9, 0},
+		{0, 0, 6, 0, 0, 1, 0, 0, 4},
+		{0, 0, 0, 5, 0, 0, 2, 0, 0},
+		{9, 0, 0, 0, 8, 0, 0, 0, 0},
+		{0, 1, 0, 9, 0, 0, 0, 0, 0},
+		{0, 0, 8, 0, 0, 2, 3, 0, 0},
 	}
 
 	fmt.Printf("Avant la modification : \n")

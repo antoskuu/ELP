@@ -21,15 +21,15 @@ def convert_and_increment(grid):
     return result
 
 # Example usage with your provided grid
-input_grid = """0  0  8   0  0  4   0  9  0 
-0  7  0   1  0  0   5  0  0 
-5  0  0   0  6  0   0  0  3 
-1  0  0   0  4  0   0  0  8 
-0  8  0   0  0  0   7  0  0 
-0  0  2   0  0  0   0  1  0 
-0  6  0   2  0  0   0  0  0 
-3  0  0   0  8  0   0  0  5 
-0  0  7   0  0  9   0  4  0"""
+input_grid = """0  0  4   0  0  9   0  0  6 
+0  7  0   1  0  0   8  0  0 
+3  0  0   0  7  0   0  5  0 
+7  0  0   0  3  0   0  9  0 
+0  0  6   0  0  1   0  0  4 
+0  0  0   5  0  0   2  0  0 
+9  0  0   0  8  0   0  0  0 
+0  1  0   9  0  0   0  0  0 
+0  0  8   0  0  2   3  0  0 """
 
 result = convert_and_increment(input_grid)
 print(result)
