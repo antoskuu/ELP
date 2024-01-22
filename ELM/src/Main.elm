@@ -3,31 +3,47 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, text, pre)
 import Http
+import Random
+import Array
 
-main = 
-  Browser.element 
-  { init = init
-  , update = update
-  , subscriptions = subscriptions
-  , view = view
-  }
+
+
+-- MAIN
+
+
+main =
+  Browser.element
+    { init = init
+    , update = update
+    , subscriptions = subscriptions
+    , view = view
+    }
+
+
+
+-- MODEL
 
 
 type Model
   = Failure
   | Loading
-  | Success String 
-  
-  
+  | Success String
+
+
 init : () -> (Model, Cmd Msg)
 init _ =
   ( Loading
   , Http.get
-      { url = "https://api.dictionaryapi.dev/api/v2/entries/en/hello"
+      { url = "/thousand_words_things_explainer.txt"
       , expect = Http.expectString GotText
       }
   )
-  
+
+
+
+-- UPDATE
+
+
 type Msg
   = GotText (Result Http.Error String)
 
@@ -42,6 +58,11 @@ update msg model =
 
         Err _ ->
           (Failure, Cmd.none)
+
+
+
+-- SUBSCRIPTIONS
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -63,4 +84,3 @@ view model =
 
     Success fullText ->
       pre [] [ text fullText ]
-  
