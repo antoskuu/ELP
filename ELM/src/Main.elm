@@ -3,9 +3,9 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, text, pre)
 import Http
-import Random
-import Array
-
+import Array exposing (Array)
+import Random exposing (Generator, initialSeed, step, int)
+import Maybe exposing (withDefault)
 
 
 -- MAIN
@@ -27,17 +27,12 @@ main =
 type Model
   = Failure
   | Loading
-  | Success String
+  | Success (Array String)
 
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  ( Loading
-  , Http.get
-      { url = "/thousand_words_things_explainer.txt"
-      , expect = Http.expectString GotText
-      }
-  )
+  (Loading, Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString GotText })
 
 
 
@@ -54,7 +49,11 @@ update msg model =
     GotText result ->
       case result of
         Ok fullText ->
-          (Success fullText, Cmd.none)
+          let
+            modifiedText = String.words fullText
+            wordArray = Array.fromList modifiedText
+          in
+          (Success wordArray, Cmd.none)
 
         Err _ ->
           (Failure, Cmd.none)
@@ -82,5 +81,17 @@ view model =
     Loading ->
       text "Loading..."
 
-    Success fullText ->
-      pre [] [ text fullText ]
+    Success wordArray ->
+      let
+        randomWord = getRandomWord wordArray (Random.step (initialSeed 42))
+      in
+      pre [] [ text randomWord ]
+
+
+
+getRandomWord : Array String -> Generator Int -> String
+getRandomWord wordArray generator =
+  let
+    index = withDefault 0 (Random.generate int generator)
+  in
+  Array.get index wordArray |> withDefault "No word found"

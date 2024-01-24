@@ -6173,13 +6173,13 @@ var $author$project$Main$view = function (model) {
 		case 'Loading':
 			return $elm$html$Html$text('Loading...');
 		default:
-			var fullText = model.a;
+			var word = model.a;
 			return A2(
 				$elm$html$Html$pre,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(fullText)
+						$elm$html$Html$text(word)
 					]));
 	}
 };
