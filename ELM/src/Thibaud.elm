@@ -1,13 +1,13 @@
 module Thibaud exposing (..)
 
-import Array exposing (fromList, get)
 import Browser
-import Html exposing (Html, div, text, input, button, h1, p, blockquote,ul,li,ol)
-import Html.Attributes exposing (placeholder, value, disabled, class, type_, checked)
-import Html.Events exposing (onClick, onInput)
-import Http exposing (Error)
-import Random exposing (int)
-import Json.Decode exposing (Decoder, string, list, field, map2, map3)
+import Array exposing (fromList, get)
+import Html exposing (..)
+import Html.Attributes exposing (style)
+import Http 
+import Random 
+import Json.Decode exposing (Decoder, string, list, field, map2, map)
+
 
 
 main : Program () Model Msg
@@ -22,7 +22,7 @@ main =
 -- Model
 type alias Model = 
     { allWord : List String
-    , randomword : String
+    , randomword : Maybe String
     , state : State
     , select : String
     }
@@ -30,10 +30,10 @@ type alias Model =
 type State 
     = Failure
     | Loading
-    | Success SelectedWord
+    | Success (List Word)
 
 
-type alias SelectedWord =
+type alias Word =
     { word : String
     , meanings : List Meaning
     }
@@ -53,13 +53,19 @@ type alias Definition =
 type Msg
     = WordFetched (Result Http.Error String)
     | RandomNumber Int
-    | FetchDefinitions String
-    | DefinitionsFetched (Result Http.Error (List Definition))
+    | DefinitionsFetched (Result Http.Error (List Word))
 
 -- Init function
 init : () -> (Model, Cmd Msg)
 init _ =
-    ({state = Loading , allWord = []}, Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched })
+    ( { allWord = []
+      , randomword = Nothing
+      , select = Maybe.withDefault "" Nothing 
+      , state = Loading
+      }
+    , Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched }
+    )
+
 
 -- Update function
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -73,23 +79,29 @@ update msg model =
                 index = 
                     Random.generate RandomNumber (Random.int 0 (List.length wordList - 1 ))
             in
-                ({ model | allWord = wordList}, RandomNumber index)
+                ({ model | allWord = wordList}, index)
 
         WordFetched (Err _) ->
-            (Failure, Cmd.none)
+            ({model | state = Failure}, Cmd.none)
 
         RandomNumber ind ->
             let 
-                selected = get ind (fromList model.allWord)
+                choix = get ind (fromList model.allWord)
             in 
-            ( {model | randomword = selected, getDefinitionsCmd = getDefinitionsCmd model.randomword })
+            case choix of
+                Just mot ->
+                    ( {model | randomword = choix}, getDefinitionsCmd mot )
 
-        DefinitionsFetched (Ok definitions) ->
-            ({model | state = Success {word = model.select, meanings = definitions }}, Cmd.none)
+                Nothing ->
+                    (model, Cmd.none)
+
+        DefinitionsFetched definitionsResult ->
+            case definitionsResult of
+                Ok definitions ->
+                    ({model | state = Success definitions}, Cmd.none)
                     
-        DefinitionsFetched (Err _) ->
-            -- En cas d'erreur lors de la récupération des définitions, on met à jour l'état à Failure
-            ({ model | state = Failure }, Cmd.none)
+                Err _ ->
+                    ({ model | state = Failure }, Cmd.none)
 
 
 -- Subscriptions    
@@ -107,26 +119,29 @@ view model =
         Loading ->
             text "Chargement..."
 
-        Success selectedWord ->
+        Success fullWords ->
             div []
-                [ div [] [ text "Mot: " ]
-                , div [] [ text selectedWord.word ]
-                , div [] (List.map viewMeaning selectedWord.meanings)
-                ]
+            [div [] (List.map (\fullWord -> text fullWord.word) fullWords)
+            , div [] (List.map viewMeaning fullWords)
+            ]
 
 -- Fonction auxiliaire pour afficher une signification (meaning)
-viewMeaning : Meaning -> Html Msg
-viewMeaning meaning =
+viewMeaning : Word -> Html Msg
+viewMeaning fullWord =
     div []
-        [ div [] [ text ("Partie du discours : " ++ meaning.partOfSpeech) ]
+        (List.map viewMeaningItem fullWord.meanings)
+
+viewMeaningItem : Meaning -> Html Msg
+viewMeaningItem meaning =
+    div []
+        [ div [] [text (meaning.partOfSpeech)]
         , div [] (List.map viewDefinition meaning.definitions)
         ]
 
--- Fonction auxiliaire pour afficher une définition (definition)
 viewDefinition : Definition -> Html Msg
 viewDefinition definition =
     div []
-        [ div [] [ text ("Définition : " ++ definition.definition) ]
+        [ div [] [text (definition.definition)]
         ]
 
 -- GetDefinitionsCmd
@@ -134,19 +149,19 @@ getDefinitionsCmd : String -> Cmd Msg
 getDefinitionsCmd word =
     Http.get
         { url = "https://api.dictionaryapi.dev/api/v2/entries/en/" ++ word
-        , expect = Http.expectJson DefinitionsFetched (list definitionDecoder)
+        , expect = Http.expectJson DefinitionsFetched (list wordDecoder)
         }
 
 -- WordDecoder
-wordDecoder : Decoder Meaning
+wordDecoder : Decoder Word
 wordDecoder =
-    Json.Decode.map2 Meaning
-        (field "partOfSpeech" string)
-        (field "definitions" (list definitionDecoder))
+    Json.Decode.map2 Word
+        (field "word" string)
+        (field "meanings" (list meaningDecoder))
 
 -- MeaningDecoder
 meaningDecoder : Decoder Meaning
-meaningDecoder =
+meaningDecoder =    
     Json.Decode.map2 Meaning
         (field "partOfSpeech" string)
         (field "definitions" (list definitionDecoder))
@@ -162,5 +177,5 @@ textToList : String -> List String
 textToList allword =
     String.words allword
 
--- GetRandomWord
+
 
