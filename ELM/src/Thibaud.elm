@@ -1,15 +1,16 @@
 module Thibaud exposing (..)
 
+import Array exposing (fromList, get)
 import Browser
-import Html exposing (..)
-import Html.Attributes exposing (style)
-import Html.Events exposing (..)
-import Http
-import Json.Decode exposing (Decoder, field, string, list, map2, map)
-import Browser.Navigation exposing (load)
-import Random exposing (step, Generator)
+import Html exposing (Html, div, text, input, button, h1, p, blockquote,ul,li,ol)
+import Html.Attributes exposing (placeholder, value, disabled, class, type_, checked)
+import Html.Events exposing (onClick, onInput)
+import Http exposing (Error)
+import Random exposing (int)
+import Json.Decode exposing (Decoder, string, list, field, map2, map3)
 
 
+main : Program () Model Msg
 main =
     Browser.element
         { init = init
@@ -18,101 +19,117 @@ main =
         , view = view
         }
 
-type Model
+-- Model
+type alias Model = 
+    { allWord : List String
+    , randomword : String
+    , state : State
+    , select : String
+    }
+
+type State 
     = Failure
     | Loading
-    | Success SelectedWord (List Meaning)
+    | Success SelectedWord
+
 
 type alias SelectedWord =
     { word : String
     , meanings : List Meaning
-    , wordSelected : Bool
     }
 
+-- Meaning alias
 type alias Meaning =
     { partOfSpeech : String
     , definitions : List Definition
     }
 
+-- Definition alias
 type alias Definition =
     { definition : String
     }
 
-init : () -> (Model, Cmd Msg)
-init _ =
-    (Loading, Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched })
-
+-- Msg
 type Msg
-    = FetchWord
-    | WordFetched (Result Http.Error String)
+    = WordFetched (Result Http.Error String)
+    | RandomNumber Int
     | FetchDefinitions String
     | DefinitionsFetched (Result Http.Error (List Definition))
 
+-- Init function
+init : () -> (Model, Cmd Msg)
+init _ =
+    ({state = Loading , allWord = []}, Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched })
+
+-- Update function
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-        FetchWord ->
-            (Loading, Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched })
-
         WordFetched (Ok wordText) ->
             let
                 wordList =
                     textToList wordText
-                randomWord =
-                    getRandomWord wordList
+
+                index = 
+                    Random.generate RandomNumber (Random.int 0 (List.length wordList - 1 ))
             in
-            (Success { word = randomWord, meanings = [], wordSelected = False }, getDefinitionsCmd randomWord)
+                ({ model | allWord = wordList}, RandomNumber index)
 
         WordFetched (Err _) ->
             (Failure, Cmd.none)
 
-        FetchDefinitions selectedWord ->
-            (Loading, getDefinitionsCmd selectedWord)
+        RandomNumber ind ->
+            let 
+                selected = get ind (fromList model.allWord)
+            in 
+            ( {model | randomword = selected, getDefinitionsCmd = getDefinitionsCmd model.randomword })
 
         DefinitionsFetched (Ok definitions) ->
-            case model of
-                Success selectedWord _ ->
-                    (Success { selectedWord | meanings = definitions, wordSelected = True }, Cmd.none)
-
-                _ ->
-                    (Failure, Cmd.none)
-
+            ({model | state = Success {word = model.select, meanings = definitions }}, Cmd.none)
+                    
         DefinitionsFetched (Err _) ->
-            (Failure, Cmd.none)
+            -- En cas d'erreur lors de la récupération des définitions, on met à jour l'état à Failure
+            ({ model | state = Failure }, Cmd.none)
 
+
+-- Subscriptions    
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
+-- View
 view : Model -> Html Msg
 view model =
-    case model of
+    case model.state of
         Failure ->
-            text "I was unable to load your book."
+            text "Impossible de charger votre livre."
 
         Loading ->
-            text "Loading..."
+            text "Chargement..."
 
-        Success fullWords ->
+        Success selectedWord ->
             div []
-                [ div [] [ text "Word: " ]
-                , div [] [ text fullWords.word ]
-                , div [] (List.map viewMeaning fullWords.meanings)
+                [ div [] [ text "Mot: " ]
+                , div [] [ text selectedWord.word ]
+                , div [] (List.map viewMeaning selectedWord.meanings)
                 ]
 
+-- Fonction auxiliaire pour afficher une signification (meaning)
 viewMeaning : Meaning -> Html Msg
 viewMeaning meaning =
     div []
-        [ div [] [ text ("Part of Speech: " ++ meaning.partOfSpeech) ]
+        [ div [] [ text ("Partie du discours : " ++ meaning.partOfSpeech) ]
         , div [] (List.map viewDefinition meaning.definitions)
         ]
 
+-- Fonction auxiliaire pour afficher une définition (definition)
 viewDefinition : Definition -> Html Msg
 viewDefinition definition =
     div []
-        [ div [] [ text ("Definition: " ++ definition.definition) ]
+        [ div [] [ text ("Définition : " ++ definition.definition) ]
         ]
 
+-- GetDefinitionsCmd
 getDefinitionsCmd : String -> Cmd Msg
 getDefinitionsCmd word =
     Http.get
@@ -120,27 +137,30 @@ getDefinitionsCmd word =
         , expect = Http.expectJson DefinitionsFetched (list definitionDecoder)
         }
 
+-- WordDecoder
 wordDecoder : Decoder Meaning
 wordDecoder =
     Json.Decode.map2 Meaning
         (field "partOfSpeech" string)
         (field "definitions" (list definitionDecoder))
 
+-- MeaningDecoder
 meaningDecoder : Decoder Meaning
 meaningDecoder =
     Json.Decode.map2 Meaning
         (field "partOfSpeech" string)
         (field "definitions" (list definitionDecoder))
 
+-- DefinitionDecoder
 definitionDecoder : Decoder Definition
 definitionDecoder =
     Json.Decode.map Definition
         (field "definition" string)
 
-
+-- TextToList
 textToList : String -> List String
 textToList allword =
     String.words allword
 
-
+-- GetRandomWord
 
