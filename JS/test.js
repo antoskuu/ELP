@@ -34,7 +34,7 @@ function choixjoueur(arr) {
   }
   
   var firstplayerplay = choixjouer([1, 2]);
-  console.log(resultat);
+  console.log(firstplayerplay);
 
 function grilleInit() {
 
