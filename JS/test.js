@@ -28,15 +28,6 @@ function tirerLettre(pioche, lettre) {
     }
 }
 
-function pileOuFace() {
-
-}
-
-function grilleInit() {
-
-}
-
-
 function grilleInit(valeurInitiale) {
     const grille = [];
 
@@ -65,8 +56,33 @@ function affichagePlateau(grille) {
 }
 
 
+
+
+function ajoutMotAGrille(grille, mot, ligne) {
+    // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
+    if (mot.length > 3 && mot.length <= grille[0].length) {
+        // Vérifier si la ligne spécifiée est vide
+        if (grille[ligne].every(cellule => cellule === "" || cellule === undefined)) {
+            // Ajouter le mot à la ligne de la grille
+            for (let i = 0; i < mot.length; i++) {
+                grille[ligne][i] = mot[i];
+            }
+            return true; // Mot ajouté avec succès
+        } else {
+            console.log("La ligne n'est pas vide. Choisissez une ligne vide.");
+        }
+    } else {
+        console.log("La longueur du mot ne satisfait pas les conditions.");
+    }
+
+    return false; // Le mot n'a pas été ajouté
+}
+
+
+
+
 // Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale 'X'
-const maGrille = grilleInit("0");
+const maGrille = grilleInit("");
 
 // Afficher la grille résultante
 affichagePlateau(maGrille)
@@ -77,10 +93,18 @@ plateau1=grilleInit()
 plateau2=grilleInit()
 
 
+const motAInserer = "TIGRE";
+const ligneAInserer = 1;
 
+if (ajoutMotAGrille(maGrille, motAInserer, ligneAInserer)) {
+    console.log("Mot ajouté avec succès !");
+} else {
+    console.log("Le mot n'a pas été ajouté.");
+}
+
+affichagePlateau(maGrille);
 
 
 let lettreTiree = tirerLettre(pioche, 'A');
 console.log(`Lettre tirée : ${lettreTiree}`);
 
-console.log(piocheResultante)
