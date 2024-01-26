@@ -28,14 +28,24 @@ function tirerLettre(pioche, lettre) {
     }
 }
 
-function pileOuFace() {
-
+function randomElement(arr) {
+    var randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex]
 }
+
+var resultat = randomElement([1,2])
+console.log(resultat)
 
 function grilleInit() {
 
 }
 
+
+function pileOuFace() {
+    var random = Math.random();
+
+    if (random )
+}
 
 function grilleInit(valeurInitiale) {
     const grille = [];
@@ -65,6 +75,8 @@ function affichagePlateau(grille) {
 }
 
 
+
+
 // Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale 'X'
 const maGrille = grilleInit("0");
 
@@ -83,4 +95,5 @@ plateau2=grilleInit()
 let lettreTiree = tirerLettre(pioche, 'A');
 console.log(`Lettre tirée : ${lettreTiree}`);
 
-console.log(piocheResultante)
+
+
