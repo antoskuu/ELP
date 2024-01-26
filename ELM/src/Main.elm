@@ -7,6 +7,12 @@ import Html.Attributes exposing (style)
 import Http 
 import Random 
 import Json.Decode exposing (Decoder, string, list, field, map2, map)
+import Html.Attributes exposing (placeholder,value)
+import Html.Events exposing (onInput)
+import Html
+import Json.Decode exposing (bool)
+import Platform.Cmd as Cmd
+import Platform.Cmd as Cmd
 
 
 
@@ -25,6 +31,8 @@ type alias Model =
     , randomword : Maybe String
     , state : State
     , select : String
+    , userinput : String
+    , print : String
     }
 
 type State 
@@ -54,6 +62,7 @@ type Msg
     = WordFetched (Result Http.Error String)
     | RandomNumber Int
     | DefinitionsFetched (Result Http.Error (List Word))
+    | Change String
 
 -- Init function
 init : () -> (Model, Cmd Msg)
@@ -62,6 +71,8 @@ init _ =
       , randomword = Nothing
       , select = Maybe.withDefault "" Nothing 
       , state = Loading
+      , userinput = ""
+      , print = "Guess the word"
       }
     , Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched }
     )
@@ -102,6 +113,15 @@ update msg model =
                     
                 Err _ ->
                     ({ model | state = Failure }, Cmd.none)
+        
+        Change newContent ->
+                if newContent == Maybe.withDefault "" model.randomword then
+                    ({model | print = "You win, it was : " ++ newContent, userinput = newContent},Cmd.none)
+                else
+                    ({model | userinput =  newContent, print = "Guess the word"},Cmd.none)
+
+
+            
 
 
 -- Subscriptions    
@@ -112,18 +132,23 @@ subscriptions model =
 -- View
 view : Model -> Html Msg
 view model =
-    case model.state of
-        Failure ->
-            text "Impossible de charger votre livre."
+    div[]
+        [text model.print
+        , case model.state of
+            Failure ->
+                text "Impossible de charger votre livre."
 
-        Loading ->
-            text "Chargement..."
+            Loading ->
+                text "Chargement..."
 
-        Success fullWords ->
-            div []
-            [div [] (List.map (\fullWord -> text fullWord.word) fullWords)
-            , div [] (List.map viewMeaning fullWords)
-            ]
+            Success fullWords ->
+                div []
+                    [div [] (List.map (\fullWord -> text fullWord.word) fullWords)
+                    , div [] (List.map viewMeaning fullWords)
+                    ]
+        , input [placeholder "Guess the word", value model.userinput, onInput Change] []
+        ]
+        
 
 -- Fonction auxiliaire pour afficher une signification (meaning)
 viewMeaning : Word -> Html Msg
@@ -157,14 +182,14 @@ wordDecoder : Decoder Word
 wordDecoder =
     Json.Decode.map2 Word
         (field "word" string)
-        (field "meanings" (list meaningDecoder))
+        (field "meanings" (Json.Decode.list meaningDecoder))
 
 -- MeaningDecoder
 meaningDecoder : Decoder Meaning
 meaningDecoder =    
     Json.Decode.map2 Meaning
         (field "partOfSpeech" string)
-        (field "definitions" (list definitionDecoder))
+        (field "definitions" (Json.Decode.list definitionDecoder))
 
 -- DefinitionDecoder
 definitionDecoder : Decoder Definition
