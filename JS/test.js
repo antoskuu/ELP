@@ -75,19 +75,17 @@ function affichagePlateau(grille) {
 
     // Afficher les indices des colonnes
     let entete = "\t";
-    for (let j = 0; j < colonnes; j++) {
-        entete += `${j}\t`;
-    }
+    entete = "                 9    16    25    36    49    64    81"
     console.log(entete);
 
     // Afficher la grille avec les indices de ligne et les tirets
     for (let i = 0; i < lignes; i++) {
         let ligne = `${i}\t|`;
         for (let j = 0; j < colonnes; j++) {
-            ligne += ` ${grille[i][j] || '-'} \t|`;
+            ligne += ` ${grille[i][j] || ' '} \t|`;
         }
         console.log(ligne);
-        console.log("\t" + "-".repeat((colonnes + 1) * 6 - 1)); // Ligne de tirets
+        console.log("\t" + "_".repeat((colonnes + 1) * 6 - 1)); // Ligne de tirets
     }
 }
 
