@@ -33,8 +33,8 @@ function choixjoueur(arr) {
     return arr[randomIndex];
   }
   
-  var firstplayerplay = choixjouer([1, 2]);
-  console.log(firstplayerplay);
+var firstplayerplay = choixjoueur([1, 2]);
+console.log(firstplayerplay);
 
 function grilleInit() {
 
