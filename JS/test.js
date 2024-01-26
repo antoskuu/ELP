@@ -56,17 +56,44 @@ function grilleInit(valeurInitiale) {
     return grille;
 }
 
+// function affichagePlateau(grille) {
+//     for (let i = 0; i < grille.length; i++) {
+//         let ligne = "";
+//         for (let j = 0; j < grille[i].length; j++) {
+//             if (grille[i][j]!=0) {
+//                 ligne += grille[i][j]; // Ajouter une tabulation entre chaque valeur
+//             }
+//         }
+//         console.log(ligne);
+//     }
+// }
+
+
 function affichagePlateau(grille) {
-    for (let i = 0; i < grille.length; i++) {
-        let ligne = "";
-        for (let j = 0; j < grille[i].length; j++) {
-            if (grille[i][j]!=0) {
-                ligne += grille[i][j]; // Ajouter une tabulation entre chaque valeur
-            }
+    const lignes = grille.length;
+    const colonnes = grille[0].length;
+
+    // Afficher les indices des colonnes
+    let entete = "\t";
+    for (let j = 0; j < colonnes; j++) {
+        entete += `${j}\t`;
+    }
+    console.log(entete);
+
+    // Afficher la grille avec les indices de ligne et les tirets
+    for (let i = 0; i < lignes; i++) {
+        let ligne = `${i}\t|`;
+        for (let j = 0; j < colonnes; j++) {
+            ligne += ` ${grille[i][j] || '-'} \t|`;
         }
         console.log(ligne);
+        console.log("\t" + "-".repeat((colonnes + 1) * 6 - 1)); // Ligne de tirets
     }
 }
+
+
+
+
 function ajoutMotAGrille(grille, mot, ligne) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
     if (mot.length > 3 && mot.length <= grille[0].length) {
