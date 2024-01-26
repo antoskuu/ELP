@@ -1,0 +1,86 @@
+function creerPioche(entrée) {
+    const pioche = [];
+    const parties = entrée.split(' ');
+    parties.forEach(partie => {
+        const quantite = parseInt(partie.slice(0, -1), 10);
+        const lettre = partie.slice(-1);
+        pioche.push({ lettre, quantite });
+    });
+
+    return pioche;
+}
+
+const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
+const pioche = creerPioche(entree);
+console.log(pioche);
+
+
+// Exemple de comment tirer une lettre de la pioche avec mise à jour de la quantité
+function tirerLettre(pioche, lettre) {
+    const lettreIndex = pioche.findIndex(item => item.lettre === lettre);
+
+    if (lettreIndex !== -1 && pioche[lettreIndex].quantite > 0) {
+        pioche[lettreIndex].quantite--;
+        return lettre;
+    } else {
+        console.log(`La lettre ${lettre} n'est plus disponible dans la pioche.`);
+        return null;
+    }
+}
+
+function pileOuFace() {
+
+}
+
+function grilleInit() {
+
+}
+
+
+function grilleInit(valeurInitiale) {
+    const grille = [];
+
+    // Boucler pour créer chaque ligne de la grille
+    for (let i = 0; i < 8; i++) {
+        // Initialiser chaque ligne avec la valeur initiale spécifiée
+        const ligne = Array(9).fill(valeurInitiale);
+        
+        // Ajouter la ligne à la grille
+        grille.push(ligne);
+    }
+
+    return grille;
+}
+
+function affichagePlateau(grille) {
+    for (let i = 0; i < grille.length; i++) {
+        let ligne = "";
+        for (let j = 0; j < grille[i].length; j++) {
+            if (grille[i][j]!=0) {
+                ligne += grille[i][j]; // Ajouter une tabulation entre chaque valeur
+            }
+        }
+        console.log(ligne);
+    }
+}
+
+
+// Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale 'X'
+const maGrille = grilleInit("0");
+
+// Afficher la grille résultante
+affichagePlateau(maGrille)
+
+
+
+plateau1=grilleInit()
+plateau2=grilleInit()
+
+
+
+
+
+let lettreTiree = tirerLettre(pioche, 'A');
+console.log(`Lettre tirée : ${lettreTiree}`);
+
+console.log(piocheResultante)
