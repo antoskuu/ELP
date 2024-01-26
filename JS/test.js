@@ -113,5 +113,3 @@ affichagePlateau(maGrille);
 
 let lettreTiree = tirerLettre(pioche, 'A');
 console.log(`Lettre tirée : ${lettreTiree}`);
-
-console.log(piocheResultante)
