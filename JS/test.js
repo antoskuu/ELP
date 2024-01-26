@@ -28,9 +28,13 @@ function tirerLettre(pioche, lettre) {
     }
 }
 
-function pileOuFace() {
-
-}
+function randomElement(arr) {
+    var randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
+  
+  var resultat = randomElement([1, 2]);
+  console.log(resultat);
 
 function grilleInit() {
 
