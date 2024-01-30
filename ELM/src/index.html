@@ -6227,9 +6227,11 @@ var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
 			allWord: _List_Nil,
+			print: 'Guess the word',
 			randomword: $elm$core$Maybe$Nothing,
 			select: A2($elm$core$Maybe$withDefault, '', $elm$core$Maybe$Nothing),
-			state: $author$project$Main$Loading
+			state: $author$project$Main$Loading,
+			userinput: ''
 		},
 		$elm$http$Http$get(
 			{
@@ -6582,7 +6584,7 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
+			case 'DefinitionsFetched':
 				var definitionsResult = msg.a;
 				if (definitionsResult.$ === 'Ok') {
 					var definitions = definitionsResult.a;
@@ -6600,11 +6602,70 @@ var $author$project$Main$update = F2(
 							{state: $author$project$Main$Failure}),
 						$elm$core$Platform$Cmd$none);
 				}
+			default:
+				var newContent = msg.a;
+				return _Utils_eq(
+					newContent,
+					A2($elm$core$Maybe$withDefault, '', model.randomword)) ? _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{print: 'You win, it was : ' + newContent, userinput: newContent}),
+					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{print: 'Guess the word', userinput: newContent}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Main$Change = function (a) {
+	return {$: 'Change', a: a};
+};
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$viewDefinition = function (definition) {
 	return A2(
 		$elm$html$Html$div,
@@ -6646,34 +6707,52 @@ var $author$project$Main$viewMeaning = function (fullWord) {
 		A2($elm$core$List$map, $author$project$Main$viewMeaningItem, fullWord.meanings));
 };
 var $author$project$Main$view = function (model) {
-	var _v0 = model.state;
-	switch (_v0.$) {
-		case 'Failure':
-			return $elm$html$Html$text('Impossible de charger votre livre.');
-		case 'Loading':
-			return $elm$html$Html$text('Chargement...');
-		default:
-			var fullWords = _v0.a;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(model.print),
+				function () {
+				var _v0 = model.state;
+				switch (_v0.$) {
+					case 'Failure':
+						return $elm$html$Html$text('Impossible de charger votre livre.');
+					case 'Loading':
+						return $elm$html$Html$text('Chargement...');
+					default:
+						var fullWords = _v0.a;
+						return A2(
+							$elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_Nil,
+									A2(
+										$elm$core$List$map,
+										function (fullWord) {
+											return $elm$html$Html$text(fullWord.word);
+										},
+										fullWords)),
+									A2(
+									$elm$html$Html$div,
+									_List_Nil,
+									A2($elm$core$List$map, $author$project$Main$viewMeaning, fullWords))
+								]));
+				}
+			}(),
+				A2(
+				$elm$html$Html$input,
 				_List_fromArray(
 					[
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						A2(
-							$elm$core$List$map,
-							function (fullWord) {
-								return $elm$html$Html$text(fullWord.word);
-							},
-							fullWords)),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						A2($elm$core$List$map, $author$project$Main$viewMeaning, fullWords))
-					]));
-	}
+						$elm$html$Html$Attributes$placeholder('Guess the word'),
+						$elm$html$Html$Attributes$value(model.userinput),
+						$elm$html$Html$Events$onInput($author$project$Main$Change)
+					]),
+				_List_Nil)
+			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
