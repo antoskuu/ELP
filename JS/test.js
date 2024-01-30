@@ -1,3 +1,7 @@
+//création de la pioche
+
+const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
+
 function creerPioche(entrée) {
     const pioche = [];
     const parties = entrée.split(' ');
@@ -10,7 +14,6 @@ function creerPioche(entrée) {
     return pioche;
 }
 
-const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
 const pioche = creerPioche(entree);
 console.log(pioche);
 
@@ -28,6 +31,7 @@ function tirerLettre(pioche, lettre) {
     }
 }
 
+//pile ou face
 function choixjoueur(arr) {
     var randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
@@ -36,47 +40,25 @@ function choixjoueur(arr) {
 var firstplayerplay = choixjoueur([1, 2]);
 console.log(firstplayerplay);
 
-function grilleInit() {
 
-}
-
-
+//création de la matrice des
 function grilleInit(valeurInitiale) {
     const grille = [];
-
-    // Boucler pour créer chaque ligne de la grille
     for (let i = 0; i < 8; i++) {
-        // Initialiser chaque ligne avec la valeur initiale spécifiée
         const ligne = Array(9).fill(valeurInitiale);
-        
-        // Ajouter la ligne à la grille
         grille.push(ligne);
     }
 
     return grille;
 }
 
-// function affichagePlateau(grille) {
-//     for (let i = 0; i < grille.length; i++) {
-//         let ligne = "";
-//         for (let j = 0; j < grille[i].length; j++) {
-//             if (grille[i][j]!=0) {
-//                 ligne += grille[i][j]; // Ajouter une tabulation entre chaque valeur
-//             }
-//         }
-//         console.log(ligne);
-//     }
-// }
-
-
+//affichage du plateau
 function affichagePlateau(grille) {
     const lignes = grille.length;
     const colonnes = grille[0].length;
 
     // Afficher les indices des colonnes
-    let entete = "\t";
-    entete = "                 9    16    25    36    49    64    81"
-    console.log(entete);
+
 
     // Afficher la grille avec les indices de ligne et les tirets
     for (let i = 0; i < lignes; i++) {
@@ -85,12 +67,30 @@ function affichagePlateau(grille) {
             ligne += ` ${grille[i][j] || ' '} \t|`;
         }
         console.log(ligne);
-        console.log("\t" + "_".repeat((colonnes + 1) * 6 - 1)); // Ligne de tirets
     }
 }
 
+//ajout d'un score
+function ajoutScore(grille, ligne, suite) {
+    // Vérifier si la suite de nombres est un tableau
+    if (Array.isArray(suite)) {
+        // Vérifier si la ligne spécifiée est vide
+        if (grille[ligne].every(cellule => cellule === "" || cellule === undefined)) {
+            // Ajouter les numéros à la ligne de la grille
+            for (let i = 0; i < suite.length; i++) {
+                grille[ligne][i] = suite[i];
+            }
+            return true; // Numéros ajoutés avec succès
+        } else {
+            console.log("La ligne n'est pas vide. Choisissez une ligne vide.");
+        }
+    } else {
+        console.log("La suite de nombres n'est pas un tableau.");
+    }
 
-
+    return false; // Les numéros n'ont pas été ajoutés
+}
+//ajout d'un mot à la grille
 
 function ajoutMotAGrille(grille, mot, ligne) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
@@ -112,11 +112,12 @@ function ajoutMotAGrille(grille, mot, ligne) {
     return false; // Le mot n'a pas été ajouté
 }
 
-// Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale 'X'
+// Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale ""
 const maGrille = grilleInit("");
 
 // Afficher la grille résultante
-affichagePlateau(maGrille)
+
+// Utilisation de la fonction f pour afficher la grille avec les mots
 
 
 
@@ -124,15 +125,9 @@ plateau1=grilleInit()
 plateau2=grilleInit()
 
 
-const motAInserer = "TIGRE";
-const ligneAInserer = 1;
 
-if (ajoutMotAGrille(maGrille, motAInserer, ligneAInserer)) {
-    console.log("Mot ajouté avec succès !");
-} else {
-    console.log("Le mot n'a pas été ajouté.");
-}
-
+ajoutScore(maGrille, 0, [0, 0, 9, 16, 25, 36, 49, 64, 81]);
+ajoutMotAGrille(maGrille, "BONJOUR", 1);
 affichagePlateau(maGrille);
 
 
