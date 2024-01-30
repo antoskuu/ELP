@@ -3,16 +3,17 @@ module Main exposing (..)
 import Browser
 import Array exposing (fromList, get)
 import Html exposing (..)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (style,type_,checked)
 import Http 
 import Random 
 import Json.Decode exposing (Decoder, string, list, field, map2, map)
-import Html.Attributes exposing (placeholder,value)
+import Html.Attributes exposing (placeholder,value,style,style)
 import Html.Events exposing (onInput)
 import Html
 import Json.Decode exposing (bool)
 import Platform.Cmd as Cmd
 import Platform.Cmd as Cmd
+import Html.Events exposing (onClick)
 
 
 
@@ -33,6 +34,7 @@ type alias Model =
     , select : String
     , userinput : String
     , print : String
+    , ischecked : Bool
     }
 
 type State 
@@ -63,6 +65,7 @@ type Msg
     | RandomNumber Int
     | DefinitionsFetched (Result Http.Error (List Word))
     | Change String
+    | Check 
 
 -- Init function
 init : () -> (Model, Cmd Msg)
@@ -73,6 +76,7 @@ init _ =
       , state = Loading
       , userinput = ""
       , print = "Guess the word"
+      , ischecked = False
       }
     , Http.get { url = "/thousand_words_things_explainer.txt", expect = Http.expectString WordFetched }
     )
@@ -120,6 +124,23 @@ update msg model =
                 else
                     ({model | userinput =  newContent, print = "Guess the word"},Cmd.none)
 
+        Check ->
+            let
+                updatedModel =
+                    { model | ischecked = not model.ischecked }
+            in
+            if updatedModel.ischecked then
+                case updatedModel.randomword of
+                    Just word ->
+                         ({ updatedModel | print = "The word was : " ++ word }, Cmd.none)
+
+                    Nothing ->
+                        ({ updatedModel | print = "The word was not available" }, Cmd.none)
+            else
+                ({ updatedModel | print = "Guess the word" }, Cmd.none)
+
+            
+
 
             
 
@@ -133,7 +154,7 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div[]
-        [text model.print
+        [ h1 [] [text model.print]
         , case model.state of
             Failure ->
                 text "Impossible de charger votre livre."
@@ -143,31 +164,39 @@ view model =
 
             Success fullWords ->
                 div []
-                    [div [] (List.map (\fullWord -> text fullWord.word) fullWords)
-                    , div [] (List.map viewMeaning fullWords)
+                    [
+                    div [] (List.map viewMeaning fullWords)
                     ]
-        , input [placeholder "Guess the word", value model.userinput, onInput Change] []
+        ,  p [] [text "Type in to Guess : "]
+        , input [ value model.userinput, onInput Change] []
+        , p [] [text "Show it "]
+        , input [type_ "checkbox", checked model.ischecked, onClick Check] []
         ]
         
 
 -- Fonction auxiliaire pour afficher une signification (meaning)
 viewMeaning : Word -> Html Msg
-viewMeaning fullWord =
+viewMeaning word =
     div []
-        (List.map viewMeaningItem fullWord.meanings)
+        (List.concat
+            [ [text ("meaning")]
+            , List.map viewMeaningItem word.meanings
+            ]
+        )
 
 viewMeaningItem : Meaning -> Html Msg
 viewMeaningItem meaning =
     div []
-        [ div [] [text (meaning.partOfSpeech)]
-        , div [] (List.map viewDefinition meaning.definitions)
+        [ ul []
+            [ li [] [text (meaning.partOfSpeech)]
+        , ol [] (List.map viewDefinition meaning.definitions)
+        ]
         ]
 
 viewDefinition : Definition -> Html Msg
 viewDefinition definition =
-    div []
-        [ div [] [text (definition.definition)]
-        ]
+         li [] [text (definition.definition)]
+        
 
 -- GetDefinitionsCmd
 getDefinitionsCmd : String -> Cmd Msg
@@ -180,8 +209,7 @@ getDefinitionsCmd word =
 -- WordDecoder
 wordDecoder : Decoder Word
 wordDecoder =
-    Json.Decode.map2 Word
-        (field "word" string)
+    Json.Decode.map (\meanings -> Word "" meanings)
         (field "meanings" (Json.Decode.list meaningDecoder))
 
 -- MeaningDecoder
