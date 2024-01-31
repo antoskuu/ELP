@@ -12,7 +12,7 @@ Plongez dans cette aventure linguistique, défiez-vous et explorez le plaisir de
 git clone https://github.com/antoskuu/ELP.git
 ```
 
-2) Deplacer vous dans le dossier :
+2) Deplacez vous dans le dossier :
 
 ``` bash
 cd ELP/ELM/src
