@@ -14,15 +14,15 @@ git clone https://github.com/antoskuu/ELP.git
 
 2) Deplacer vous dans le dossier :
 
-   ``` bash
-   cd ELP/ELM/src
-   ```
+``` bash
+cd ELP/ELM/src
+```
 
 3) Compiler le code :
 
-   ``` bash
-   elm make Main.elm
-   ```
+``` bash
+elm make Main.elm
+```
 
 4) Lancer un elm reactor :
 
