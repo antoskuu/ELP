@@ -10,13 +10,18 @@ Découvrez notre solveur de sudoku en backtracking en parallèle à l'aide de go
 git clone https://github.com/antoskuu/ELP.git
 ```
 
-2) Deplacer vous dans le dossier :
+2) Deplacez vous dans le dossier :
 
 ``` bash
 cd ELP/GO/code
 ```
+3) Lancer les codes avec la commande suivante :
 
-3) Voici les 3 programmes :
+``` bash
+go run nom_du_fichier.go
+```
+   
+4) Voici les 3 programmes :
 
 - sudoko_backtracking.go : solveur de sudoku en séquentiel
 - sudoku_backtracking_parallele.go : solveur de sudoku en parallèle avec des goroutines
