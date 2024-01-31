@@ -34,5 +34,6 @@ elm reactor
    
    - cliquer sur le lien du elm reactor
    - cliquer ensuite sur le fichier index.html
+
   
 Vous pouvez maitenant jouer au jeu ! 
