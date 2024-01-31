@@ -15,18 +15,23 @@ function creerPioche(entrée) {
 }
 
 const pioche = creerPioche(entree);
-console.log(pioche);
 
 
-// Exemple de comment tirer une lettre de la pioche avec mise à jour de la quantité
-function tirerLettre(pioche, lettre) {
-    const lettreIndex = pioche.findIndex(item => item.lettre === lettre);
 
-    if (lettreIndex !== -1 && pioche[lettreIndex].quantite > 0) {
+function tirerLettreAleatoire(pioche) {
+    let lettresDisponibles = pioche.filter(item => item.quantite > 0);
+
+    if (lettresDisponibles.length > 0) {
+        let lettreAleatoireIndex = Math.floor(Math.random() * lettresDisponibles.length);
+        let lettreAleatoire = lettresDisponibles[lettreAleatoireIndex].lettre;
+
+        // Mettre à jour la quantité de la lettre tirée
+        let lettreIndex = pioche.findIndex(item => item.lettre === lettreAleatoire);
         pioche[lettreIndex].quantite--;
-        return lettre;
+
+        return lettreAleatoire;
     } else {
-        console.log(`La lettre ${lettre} n'est plus disponible dans la pioche.`);
+        console.log("Il n'y a plus de lettres disponibles dans la pioche.");
         return null;
     }
 }
@@ -69,6 +74,25 @@ function affichagePlateau(grille) {
         console.log(ligne);
     }
 }
+
+function peutFormerMot(lettres, mot) {
+    let copieLettres = [...lettres]; // Créer une copie de la liste de lettres pour ne pas la modifier
+
+    for (let lettre of mot) {
+        let index = copieLettres.indexOf(lettre);
+        if (index === -1) {
+            // Si la lettre n'est pas dans la liste, retourner false
+            return false;
+        } else {
+            // Sinon, supprimer la lettre de la liste
+            copieLettres.splice(index, 1);
+        }
+    }
+
+    // Si toutes les lettres du mot sont dans la liste, retourner true
+    return true;
+}
+
 
 //ajout d'un score
 function ajoutScore(grille, ligne, suite) {
@@ -115,21 +139,43 @@ function ajoutMotAGrille(grille, mot, ligne) {
 // Exemple d'utilisation pour créer une grille 3x4 avec la valeur initiale ""
 const maGrille = grilleInit("");
 
-// Afficher la grille résultante
-
-// Utilisation de la fonction f pour afficher la grille avec les mots
 
 
 
 plateau1=grilleInit()
 plateau2=grilleInit()
+main1=[]
+for (let i = 0; i < 7; i++) {
+    main1.push(tirerLettreAleatoire(pioche));
+}
 
 
+console.log(main1);
+const readline = require('readline');
 
 ajoutScore(maGrille, 0, [0, 0, 9, 16, 25, 36, 49, 64, 81]);
-ajoutMotAGrille(maGrille, "BONJOUR", 1);
 affichagePlateau(maGrille);
 
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-let lettreTiree = tirerLettre(pioche, 'A');
-console.log(`Lettre tirée : ${lettreTiree}`);
+function poserQuestion() {
+    rl.question('Entrez un mot : ', (reponse) => {
+        if (peutFormerMot(main1, reponse)) {
+            console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
+            ajoutMotAGrille(maGrille, "BONJOUR" + reponse, 1);
+            console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
+            rl.close();
+        } else {
+            console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
+            poserQuestion();
+        }
+    });
+}
+
+poserQuestion();
+
+
+
