@@ -2,7 +2,7 @@
 
 Découvrez notre application Elm minimaliste, un jeu captivant où le défi consiste à deviner un mot à partir de définitions. 
 Avec plus de 800 mots tirés au hasard, chaque partie offre une expérience unique. Les définitions, provenant d'une API dédiée, mettent à l'épreuve votre connaissance du vocabulaire. 
-Plongez dans cette aventure linguistique, défiez-vous et explorez le plaisir de la découverte des mots dans notre jeu Elm!
+Plongez dans cette aventure linguistique, défiez-vous et explorez le plaisir de la découverte des mots dans notre jeu Elm !
 
 ## Comment jouer
 
