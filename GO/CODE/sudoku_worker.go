@@ -126,7 +126,6 @@ func worker(id int, ch chan problem, quit chan struct{}, wg *sync.WaitGroup) {
 		case x := <-ch:
 			// Received value from the channel
 			solve(x, ch, quit)
-			time.Sleep(time.Second * 2)
 
 		case <-quit:
 			// Received signal to quit
