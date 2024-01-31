@@ -72,8 +72,7 @@ func printProbChan(probChan chan problem) {
 func printCase(p problem, id int) {
 	fmt.Printf("id: %d, Grille[%d] = %d\n", id, p.ligne, p.Grille[p.ligne])
 }
-func solve(prob problem, problemChan chan problem, quit chan struct{}, x *int) {
-	//printProb(prob)
+func solve(prob problem, problemChan chan problem, quit chan struct{}) {
 
 	if prob.ligne == TAILLE {
 		printProb(prob)
@@ -81,11 +80,8 @@ func solve(prob problem, problemChan chan problem, quit chan struct{}, x *int) {
 		return
 
 	} else if prob.colonne == TAILLE {
-		//fmt.Printf("AAAAA\n")
 
 		go func() {
-			*x = *x + 1
-			//fmt.Printf("x : %d\n", *x)
 			problemChan <- problem{
 				Grille:  prob.Grille,
 				ligne:   prob.ligne + 1,
@@ -95,10 +91,7 @@ func solve(prob problem, problemChan chan problem, quit chan struct{}, x *int) {
 		return
 
 	} else if prob.Grille[prob.ligne][prob.colonne] != 0 {
-		//fmt.Printf("BBBB\n")
 		go func() {
-			*x = *x + 1
-			//fmt.Printf("x : %d\n", *x)
 			problemChan <- problem{
 				Grille:  prob.Grille,
 				ligne:   prob.ligne,
@@ -109,42 +102,35 @@ func solve(prob problem, problemChan chan problem, quit chan struct{}, x *int) {
 
 	} else {
 		for k := 1; k <= TAILLE; k++ {
-			//fmt.Printf("CCCCC\n")
-			if absentSurBlock(k, prob.Grille, prob.ligne, prob.colonne) && absentSurColonne(k, prob.Grille, prob.colonne) && absentSurLigne(k, prob.Grille, prob.ligne) {
-				//fmt.Printf("QUOI\n")
-				go func(k int) {
-					*x = *x + 1
 
-					//fmt.Printf("x : %d\n", *x)
+			if absentSurBlock(k, prob.Grille, prob.ligne, prob.colonne) && absentSurColonne(k, prob.Grille, prob.colonne) && absentSurLigne(k, prob.Grille, prob.ligne) {
+
+				go func() {
 					prob.Grille[prob.ligne][prob.colonne] = k
 					problemChan <- problem{
 						Grille:  prob.Grille,
 						ligne:   prob.ligne,
 						colonne: (prob.colonne + 1),
 					}
-				}(k)
+				}()
 			}
 		}
 		return
 	}
 }
 
-func worker(id int, ch chan problem, quit chan struct{}, wg *sync.WaitGroup, k *int) {
+func worker(id int, ch chan problem, quit chan struct{}, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for {
 		select {
 		case x := <-ch:
 			// Received value from the channel
-			//fmt.Printf("Worker %d received:\n", id)
-			printProb(x)
-			//printCase(x, id)
-			solve(x, ch, quit, k)
+			solve(x, ch, quit)
 			time.Sleep(time.Second * 2)
-			*k = *k - 1
-			//fmt.Printf("x : %d\n", *k)
+
 		case <-quit:
 			// Received signal to quit
-			//fmt.Printf("Worker %d quitting\n", id)
+			fmt.Printf("Worker %d quitting\n", id)
 			return
 		}
 	}
@@ -156,7 +142,7 @@ func main() {
 	ch := make(chan problem)
 	quit := make(chan struct{})
 
-	numWorkers := 2
+	numWorkers := 8
 
 	grille := [TAILLE][TAILLE]int{
 		{0, 0, 8, 0, 0, 4, 0, 9, 0},
@@ -179,11 +165,11 @@ func main() {
 	}()
 	// Start workers
 	debut := time.Now()
-	x := 0
+
 	for i := 1; i <= numWorkers; i++ {
 		wg.Add(1)
-		go worker(i, ch, quit, &wg, &x)
-		time.Sleep(time.Second * 5)
+		go worker(i, ch, quit, &wg)
+		time.Sleep(time.Second)
 	}
 
 	// Wait for all workers to finish
