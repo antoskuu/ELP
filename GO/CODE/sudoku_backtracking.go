@@ -5,9 +5,11 @@ import (
 	"time"
 )
 
+// constante à changer selon la taille de la grille
 const TAILLE = 9
 const TAILLE_BLOCK = 3
 
+// fonction qui verifie si un chiffre est absent sur une ligne
 func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	for colonne := 0; colonne < TAILLE; colonne++ {
 		if grille[ligne][colonne] == k {
@@ -17,6 +19,7 @@ func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	return true
 }
 
+// fonction qui vérifie si un nombre est absent sur une colonnne
 func absentSurColonne(k int, grille [TAILLE][TAILLE]int, colonne int) bool {
 	for ligne := 0; ligne < TAILLE; ligne++ {
 		if grille[ligne][colonne] == k {
@@ -26,6 +29,7 @@ func absentSurColonne(k int, grille [TAILLE][TAILLE]int, colonne int) bool {
 	return true
 }
 
+// fonction qui vérifie si un nombre est absent dans un block
 func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) bool {
 	ligne2 := ligne - ligne%TAILLE_BLOCK
 	colonne2 := colonne - colonne%TAILLE_BLOCK
@@ -40,6 +44,7 @@ func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) b
 	return true
 }
 
+// fonction de résolution récursive
 func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int) ([TAILLE][TAILLE]int, bool) {
 	if ligne == TAILLE {
 		return grille, true
@@ -66,6 +71,7 @@ func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int) ([TAILLE][TAILLE]
 }
 
 func main() {
+	// grille initiale
 	grille := [TAILLE][TAILLE]int{
 		{0, 0, 0, 0, 7, 0, 1, 0, 0},
 		{0, 0, 0, 1, 0, 0, 0, 0, 4},
@@ -85,6 +91,7 @@ func main() {
 	debut := time.Now()
 	nouvelle_grille, sol := solve(grille, 0, 0)
 
+	//résolution de la grille
 	if sol {
 		fmt.Printf("\nAprès la modification : \n")
 		for _, ligne := range nouvelle_grille {

@@ -6,12 +6,15 @@ import (
 	"time"
 )
 
+// constante à changer selon la taille de la grille
 const TAILLE = 9
 const TAILLE_BLOCK = 3
 
+// création des wait group
 var wg1 sync.WaitGroup
 var wg2 sync.WaitGroup
 
+// fonction qui verifie si un chiffre est absent sur une ligne
 func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	for colonne := 0; colonne < TAILLE; colonne++ {
 		if grille[ligne][colonne] == k {
@@ -21,6 +24,7 @@ func absentSurLigne(k int, grille [TAILLE][TAILLE]int, ligne int) bool {
 	return true
 }
 
+// fonction qui vérifie si un nombre est absent sur une colonnne
 func absentSurColonne(k int, grille [TAILLE][TAILLE]int, colonne int) bool {
 	for ligne := 0; ligne < TAILLE; ligne++ {
 		if grille[ligne][colonne] == k {
@@ -30,6 +34,7 @@ func absentSurColonne(k int, grille [TAILLE][TAILLE]int, colonne int) bool {
 	return true
 }
 
+// fonction qui vérifie si un nombre est absent dans un block
 func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) bool {
 	ligne2 := ligne - ligne%TAILLE_BLOCK
 	colonne2 := colonne - colonne%TAILLE_BLOCK
@@ -44,6 +49,7 @@ func absentSurBlock(k int, grille [TAILLE][TAILLE]int, ligne int, colonne int) b
 	return true
 }
 
+// fonction qui vérifie si un nombre est absent dans un block
 func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, is_solve *bool) ([TAILLE][TAILLE]int, bool) {
 	if !(*is_solve) {
 		if ligne == TAILLE {
@@ -78,11 +84,6 @@ func solve(grille [TAILLE][TAILLE]int, ligne int, colonne int, is_solve *bool) (
 	}
 }
 
-func solvesudokupartial(grille [TAILLE][TAILLE]int, ligne int, colonne int, value int, is_solve *bool) {
-	grille[ligne][colonne] = value
-	solve(grille, 0, 0, is_solve)
-}
-
 func solve_para_case2(grille [TAILLE][TAILLE]int, ligne, colonne int, value int, is_solve *bool) {
 	defer wg1.Done()
 	for grille[ligne][colonne] != 0 {
@@ -92,6 +93,7 @@ func solve_para_case2(grille [TAILLE][TAILLE]int, ligne, colonne int, value int,
 			ligne = ligne + 1
 		}
 	}
+	// remplissage de la deuxième case et lancement de solve
 	for k := 1; k <= TAILLE; k++ {
 		if absentSurBlock(k, grille, ligne, colonne) && absentSurColonne(k, grille, colonne) && absentSurLigne(k, grille, ligne) && !(*is_solve) {
 			fmt.Printf("\nSTART goroutine pour : %d - %d\n", value, k)
@@ -116,6 +118,7 @@ func solve_para_case1(grille [TAILLE][TAILLE]int, ligne int, colonne int) {
 			ligne = ligne + 1
 		}
 	}
+	// remplissage de la première case et lancement des goroutines pour la deuxième case
 	for k := 1; k <= TAILLE; k++ {
 		if absentSurBlock(k, grille, ligne, colonne) && absentSurColonne(k, grille, colonne) && absentSurLigne(k, grille, ligne) {
 			grille[ligne][colonne] = k
@@ -128,6 +131,7 @@ func solve_para_case1(grille [TAILLE][TAILLE]int, ligne int, colonne int) {
 }
 
 func main() {
+	// grille initiale
 	grille := [TAILLE][TAILLE]int{
 		{0, 0, 0, 0, 7, 0, 1, 0, 0},
 		{0, 0, 0, 1, 0, 0, 0, 0, 4},
@@ -146,6 +150,7 @@ func main() {
 	}
 
 	debut := time.Now()
+	// lancement des goroutines pour la première case
 	solve_para_case1(grille, 0, 0)
 	fin := time.Now()
 	fmt.Printf("\nTemps d'execution : %.6fs \n", fin.Sub(debut).Seconds())
