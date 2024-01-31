@@ -199,7 +199,6 @@ function tirageMain(main) {
 
 plateau1=grilleInit("")
 plateau2=grilleInit("")
-plateau3=grilleInit("")
 
 
 
@@ -229,8 +228,6 @@ const rl = readline.createInterface({
 
 
 
-
-
 let mains = [];
 let plateaux = [];
 let nombreDeJoueurs = 2; // Remplacez par le nombre de joueurs que vous voulez
@@ -251,20 +248,38 @@ function poserQuestion(numero_tour, joueur) {
 
     console.log(`C'est au tour du joueur ${joueur + 1}.`);
     console.log(`Voici votre main : ${mains[joueur]}`);
-    rl.question('Entrez un mot : ', (reponse) => {
-        if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
-            console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
-            reponse=reponse.toString();
-            ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour));
-            console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
-            affichagePlateau(plateaux[joueur]);
-            let prochainJoueur = (joueur + 1) % nombreDeJoueurs; // Alternez le joueur
-            poserQuestion(numero_tour + 0.5, prochainJoueur); // Appeler poserQuestion à nouveau pour le prochain tour
-        } else {
-            console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
-            poserQuestion(numero_tour, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
-        }
-    });
+
+    rl.question('Tapez:\n 1 pour mettre un mot, \n 2 pour en modifier un, \n 3 pour ne rien faire, \n 4 pour JARNAC! \n ', (reponse1) => {
+        if (reponse1 == 1) {
+        console.log('Vous avez choisi de mettre un mot');
+        console.log('Pour revenir en arrière, tapez R');
+        rl.question('Entrez un mot : ', (reponse) => {
+            if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
+                console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
+                reponse=reponse.toString();
+                ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour));
+                console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
+                affichagePlateau(plateaux[joueur]);
+                let prochainJoueur = (joueur + 1) % nombreDeJoueurs; // Alternez le joueur
+                poserQuestion(numero_tour + 0.5, prochainJoueur); // Appeler poserQuestion à nouveau pour le prochain tour
+            } else if (reponse == "R") {
+                poserQuestion(numero_tour, joueur)
+            } else {
+                console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
+                poserQuestion(numero_tour, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
+            }
+        });
+    } else if (reponse1 == 3) {
+
+        console.log('Vous avez choisi de ne rien faire');
+        let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
+        poserQuestion(numero_tour + 0.5, prochainJoueur);
+
+
+
+    }
+}
+    )
 }
 
 // Commencer le jeu avec le tour 1 et le joueur 0
