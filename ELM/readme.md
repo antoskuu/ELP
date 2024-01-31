@@ -31,6 +31,7 @@ elm reactor
 ```
 
 5) Faites ensuite les étapes suivantes :
+   
    - cliquer sur le lien du elm reactor
    - cliquer ensuite sur le fichier index.html
   
