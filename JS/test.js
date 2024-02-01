@@ -268,10 +268,10 @@ function poserQuestion(numero_tour, joueur) {
                 console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
                 reponse=reponse.toString();
                 ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour), mains[joueur]);
-                console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
+                mains[joueur].push(tirerLettreAleatoire(pioche));
                 affichagePlateau(plateaux[joueur]);
                 let prochainJoueur = (joueur + 1) % nombreDeJoueurs; // Alternez le joueur
-                poserQuestion(numero_tour + 0.5, prochainJoueur); // Appeler poserQuestion à nouveau pour le prochain tour
+                poserQuestion(numero_tour+1, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
             } else if (reponse == "R") {
                 poserQuestion(numero_tour, joueur)
             } else {
