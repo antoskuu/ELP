@@ -132,7 +132,7 @@ function peutFormerMot(lettres, mot, grille) {
 }
     
 
-function ajoutMotAGrille(grille, mot, ligne) {
+function ajoutMotAGrille(grille, mot, ligne,main) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
     if (mot.length > 2 && mot.length <= grille[0].length) {
         // Vérifier si la ligne spécifiée est vide
@@ -140,6 +140,7 @@ function ajoutMotAGrille(grille, mot, ligne) {
             // Ajouter le mot à la ligne de la grille
             for (let i = 0; i < mot.length; i++) {
                 grille[ligne][i] = mot[i];
+                retirerLettreDeMain(main, mot[i]);
             }
             return true; // Mot ajouté avec succès
         } else {
@@ -147,6 +148,15 @@ function ajoutMotAGrille(grille, mot, ligne) {
         }
     } 
 }
+
+
+function retirerLettreDeMain(main, lettre) {
+    const index = main.indexOf(lettre);
+    if (index !== -1) {
+        main.splice(index, 1);
+    }
+}
+
 function jeuEstTermine(numero_tour){
     return numero_tour > 7; // Le jeu se termine après le tour 6
 } 
@@ -257,7 +267,7 @@ function poserQuestion(numero_tour, joueur) {
             if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
                 console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
                 reponse=reponse.toString();
-                ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour));
+                ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour), mains[joueur]);
                 console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
                 affichagePlateau(plateaux[joueur]);
                 let prochainJoueur = (joueur + 1) % nombreDeJoueurs; // Alternez le joueur
