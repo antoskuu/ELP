@@ -296,7 +296,35 @@ function poserQuestion(numero_ligne, joueur) {
                 poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
             }
         });
-    } else if (reponse1 == 3) {
+    } else if (reponse1 == 2) {
+
+
+
+
+        console.log('Vous avez choisi de modifier un mot');
+        console.log('Pour revenir en arrière, tapez R');
+        rl.question('Entrez un mot : ', (reponse) => {
+            if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
+                console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
+                reponse=reponse.toString();
+                ajoutMotAGrille(plateaux[joueur], reponse, numero_ligne[joueur], mains[joueur]);
+                mains[joueur].push(tirerLettreAleatoire(pioche));
+                affichagePlateau(plateaux[joueur]);
+                numero_ligne[joueur] = numero_ligne[joueur] + 1;
+                poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
+            } else if (reponse == "R") {
+                poserQuestion(numero_ligne, joueur)
+            } else {
+                console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
+                poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
+            }
+        });
+    }
+    
+    
+    
+    
+    else if (reponse1 == 3) {
 
         console.log('Vous avez choisi de ne rien faire');
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
@@ -304,7 +332,7 @@ function poserQuestion(numero_ligne, joueur) {
 
 
 
-    }        else {
+    } else {
         console.log('Vous devez entrer une réponse valide');
         poserQuestion(numero_ligne, joueur)
     } 
