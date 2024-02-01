@@ -132,7 +132,7 @@ function peutFormerMot(lettres, mot, grille) {
 }
     
 
-function ajoutMotAGrille(grille, mot, ligne,main) {
+function ajoutMotAGrille(grille, mot, ligne ,main) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
     if (mot.length > 2 && mot.length <= grille[0].length) {
         // Vérifier si la ligne spécifiée est vide
@@ -157,9 +157,18 @@ function retirerLettreDeMain(main, lettre) {
     }
 }
 
-function jeuEstTermine(numero_tour){
-    return numero_tour > 7; // Le jeu se termine après le tour 6
-} 
+function jeuEstTermine(grille) {
+    // Parcourir chaque ligne de la grille
+    for (let ligne of grille) {
+        // Si la ligne contient une cellule vide, retourner false
+        if (ligne.includes("") || ligne.includes(undefined)) {
+            return false;
+        }
+    }
+
+    // Si aucune ligne ne contient de cellule vide, retourner true
+    return true;
+}
 
 // function poserQuestion(numero_tour, numero_plateau) {
 //     if (jeuEstTermine(numero_tour)) {
@@ -249,8 +258,14 @@ for (let i = 0; i < nombreDeJoueurs; i++) {
     plateaux[i] = grilleInit(""); // Supposons que vous ayez une fonction pour créer un nouveau plateau
 }
 
-function poserQuestion(numero_tour, joueur) {
-    if (jeuEstTermine(Math.floor(numero_tour))) {
+ligne=[1, 1]
+
+
+
+
+function poserQuestion(numero_ligne, joueur) {
+
+    if (jeuEstTermine(plateaux[joueur])) {
         console.log("Le jeu est terminé.");
         rl.close();
         return;
@@ -260,6 +275,8 @@ function poserQuestion(numero_tour, joueur) {
     console.log(`Voici votre main : ${mains[joueur]}`);
 
     rl.question('Tapez:\n 1 pour mettre un mot, \n 2 pour en modifier un, \n 3 pour ne rien faire, \n 4 pour JARNAC! \n ', (reponse1) => {
+
+
         if (reponse1 == 1) {
         console.log('Vous avez choisi de mettre un mot');
         console.log('Pour revenir en arrière, tapez R');
@@ -267,30 +284,33 @@ function poserQuestion(numero_tour, joueur) {
             if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
                 console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
                 reponse=reponse.toString();
-                ajoutMotAGrille(plateaux[joueur], reponse, Math.floor(numero_tour), mains[joueur]);
+                ajoutMotAGrille(plateaux[joueur], reponse, numero_ligne[joueur], mains[joueur]);
                 mains[joueur].push(tirerLettreAleatoire(pioche));
                 affichagePlateau(plateaux[joueur]);
-                let prochainJoueur = (joueur + 1) % nombreDeJoueurs; // Alternez le joueur
-                poserQuestion(numero_tour+1, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
+                numero_ligne[joueur] = numero_ligne[joueur] + 1;
+                poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
             } else if (reponse == "R") {
-                poserQuestion(numero_tour, joueur)
+                poserQuestion(numero_ligne, joueur)
             } else {
                 console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
-                poserQuestion(numero_tour, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
+                poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
             }
         });
     } else if (reponse1 == 3) {
 
         console.log('Vous avez choisi de ne rien faire');
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
-        poserQuestion(numero_tour + 0.5, prochainJoueur);
+        poserQuestion(numero_ligne, prochainJoueur);
 
 
 
-    }
+    }        else {
+        console.log('Vous devez entrer une réponse valide');
+        poserQuestion(numero_ligne, joueur)
+    } 
 }
     )
 }
 
 // Commencer le jeu avec le tour 1 et le joueur 0
-poserQuestion(1, 0);
+poserQuestion(ligne, 0);
