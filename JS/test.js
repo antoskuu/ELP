@@ -332,7 +332,60 @@ function poserQuestion(numero_ligne, joueur) {
 
 
 
-    } else {
+    } else if (reponse1 == 4)   {
+        console.log('Vous avez choisi de faire un JARNAC');
+        console.log('Pour revenir en arrière, tapez R');
+        rl.question('Quelle ligne voulez vous voler?', (reponse) => {
+            if (reponse=="R") {
+                poserQuestion(numero_ligne, joueur)
+            }
+            else if (parseInt(reponse)<= 0 || parseInt(reponse)>ligne[(joueur + 1) % nombreDeJoueurs]) {
+                console.log('Vous devez entrer une réponse valide');
+                poserQuestion(numero_ligne, joueur)
+            }
+
+            else if (parseInt(reponse)> 0 && parseInt(reponse)<=ligne[(joueur + 1) % nombreDeJoueurs]){
+            main_temporaire=[]
+            longueur=0
+            for (let element of plateaux[(joueur + 1) % nombreDeJoueurs][reponse]) {
+                if (element !== "") {
+                    longueur++;
+                    main_temporaire.push(element);
+                }
+            }
+            for (let element of mains[(joueur + 1) % nombreDeJoueurs]) {
+                main_temporaire.push(element);
+            }
+            console.log(`Vous devez former un mot de plus de ${longueur} lettres avec:`);
+            console.log(main_temporaire);
+            rl.question('Quel mot formez vous?', (reponse2) => {
+              if (reponse2.length>longueur) {
+              }
+              else { 
+                console.log("Le nouveau mot n'est pas plus long que l'ancien");
+                poserQuestion(numero_ligne, joueur)}
+            });
+            }
+
+            else {
+                console.log('Vous devez entrer une réponse valide');
+                poserQuestion(numero_ligne, joueur)
+                
+            } 
+
+
+
+        
+        // else if (reponse == "R") {
+        //     poserQuestion(numero_ligne, joueur)
+        // }
+    });
+
+    }
+    
+    
+    
+    else {
         console.log('Vous devez entrer une réponse valide');
         poserQuestion(numero_ligne, joueur)
     } 
