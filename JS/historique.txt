@@ -28,3 +28,42 @@ Joueur 1 a passé son tour.
 Joueur 1 a pioché la lettre C.
 Joueur 2 a passé son tour.
 Joueur 2 a pioché la lettre Q.
+Joueur 1 a remplacé le mot MDW de la ligne 1 en MDWG.
+Joueur 1 a pioché la lettre B.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre B.
+Joueur 2 a formé le mot FXIZ avec les lettres de sa main.
+Joueur 2 a pioché la lettre C.
+Joueur 2 a formé le mot YNM avec les lettres de sa main.
+Joueur 2 a pioché la lettre E.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre E.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre U.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre S.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre M.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre G.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre J.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre O.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre P.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre N.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre U.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre I.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre D.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre T.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre S.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre B.
+Joueur 1 a volé la ligne 1 et a formé le mot FXIZL.

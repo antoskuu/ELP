@@ -473,7 +473,7 @@ function poserQuestion(numero_ligne, joueur) {
     } else if (reponse1 == 4)   {
         console.log('Vous avez choisi de faire un JARNAC');
         console.log('Pour revenir en arrière, tapez R');
-        rl.question('Quelle ligne voulez vous voler?', (reponse) => {
+        rl.question('Quelle ligne voulez vous voler ? ', (reponse) => {
             if (reponse=="R") {
                 poserQuestion(numero_ligne, joueur)
             }
