@@ -268,7 +268,6 @@ function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
         }
 
         // Retirer la lettre utilisée de la copie de la main
-        lettresDisponibles.splice(index, 1);
     }
 
     return true;
