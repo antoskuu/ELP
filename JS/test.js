@@ -417,12 +417,12 @@ function poserQuestion(numero_ligne, joueur) {
             if (reponse=="R") {
                 poserQuestion(numero_ligne, joueur)
             }
-            else if (parseInt(reponse)<= 0 || parseInt(reponse)>ligne[(joueur + 1) % nombreDeJoueurs]) {
+            else if (parseInt(reponse)<= 0 || parseInt(reponse)>numero_ligne[(joueur + 1) % nombreDeJoueurs]) {
                 console.log('Vous devez entrer une réponse valide');
                 poserQuestion(numero_ligne, joueur)
             }
 
-            else if (parseInt(reponse)> 0 && parseInt(reponse)<=ligne[(joueur + 1) % nombreDeJoueurs]){
+            else if (parseInt(reponse)> 0 && parseInt(reponse)<=numero_ligne[(joueur + 1) % nombreDeJoueurs]){
             main_temporaire=[]
             longueur=0
             for (let element of plateaux[(joueur + 1) % nombreDeJoueurs][reponse]) {
@@ -438,7 +438,7 @@ function poserQuestion(numero_ligne, joueur) {
             console.log(main_temporaire);
             rl.question('Quel mot formez vous?', (reponse2) => {
               if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
-               { ajoutMotAGrille(plateaux[joueur], reponse2, ligne[joueur], main_temporaire);
+               { ajoutMotAGrille(plateaux[joueur], reponse2, numero_ligne[joueur], main_temporaire);
 
                 jarnacSupprimerLigne(plateaux[(joueur + 1) % nombreDeJoueurs], reponse);
 
