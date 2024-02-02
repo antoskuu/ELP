@@ -570,12 +570,14 @@ function poserQuestion(numero_ligne, joueur) {
             for (let element of mains[(joueur + 1) % nombreDeJoueurs]) {
                 main_temporaire.push(element);
             }
-            for (let element of main_temporaire) {
-                main_totale.push(element);
-            }
+            main_temporaire.pop()
             for (let element of mot_de_base) {
                 main_totale.push(element);
             }
+            for (let element of main_temporaire) {
+                main_totale.push(element);
+            }
+            
             console.log(`Vous devez former un mot de plus de ${longueur} lettres avec:`);
             console.log(mot_de_base + " obligatoirement");
             console.log("et au moins une lettre de " +main_temporaire);
@@ -595,7 +597,7 @@ function poserQuestion(numero_ligne, joueur) {
                 jarnacSupprimerLigne(plateaux[(joueur + 1) % nombreDeJoueurs], reponse);
 
                 jarnacSupprimerLettres(mains[(joueur + 1) % nombreDeJoueurs], reponse2, reponse2);
-
+                
                 console.log(`Vous avez volé la ligne ${reponse} et formé le mot ${reponse2}`);
                 ecrireDansFichier(`Joueur ${joueur + 1} a volé la ligne ${reponse} et a formé le mot ${reponse2}.`)
                 console.log(`Voici votre nouveau plateau:`);
@@ -641,3 +643,6 @@ function poserQuestion(numero_ligne, joueur) {
 
 // Commencer le jeu avec le tour 1 et le joueur 0
 poserQuestion(ligne, 0);
+
+
+
