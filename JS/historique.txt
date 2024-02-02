@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Joueur 1 a formé le mot CUC avec les lettres de sa main.
 Joueur 1 a pioché la lettre P.
 Joueur 1 a remplacé le mot CUC de la ligne 1 en CUCH.
@@ -5,3 +6,7 @@ Joueur 1 a pioché la lettre N.
 Joueur 1 a passé son tour.
 Joueur 1 a pioché la lettre M.
 Joueur 2 a volé la ligne 1 et a formé le mot CUCHR.
+=======
+Joueur 1 a formé le mot RQN avec les lettres de sa main.
+Joueur 1 a passé son tour.
+>>>>>>> 2f603bd6ff7142a4f09ddbbbbe3c4acd67211fd4
