@@ -150,7 +150,7 @@ const maGrille = grilleInit("");
 // }
     
 function peutFormerMot(lettres, mot) {
-    if (mot.length > 2 || mot.length <= 9) {
+    if (mot.length > 2 && mot.length <= 9) {
         for (let lettre of mot) {
             if (!lettres.includes(lettre)) {
                 // Si une lettre du mot n'est pas dans la liste de lettres, retourner false
