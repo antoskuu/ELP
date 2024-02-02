@@ -242,6 +242,41 @@ const rl = readline.createInterface({
 // }
 
 
+function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
+    // Créer une copie de la main du joueur
+    let lettresDisponibles = main.slice();
+
+    // Créer un ensemble des lettres du nouveau mot
+    const ensembleLettresNouveauMot = new Set(nouveauMot);
+
+    // Vérifier si toutes les lettres du mot existant sont présentes dans le nouveau mot
+    for (const lettre of motExistant) {
+        if (!ensembleLettresNouveauMot.has(lettre) && lettre !== '') {
+            return false;
+        }
+    }
+
+    // Ajouter les lettres non vides du mot existant à la copie de la main
+    lettresDisponibles = lettresDisponibles.concat(motExistant.filter(lettre => lettre !== ''));
+
+    // Vérifier si le nouveau mot peut être formé en utilisant les lettres disponibles
+    for (let i = 0; i < nouveauMot.length; i++) {
+        const lettre = nouveauMot[i];
+        const index = lettresDisponibles.indexOf(lettre);
+
+        // Si la lettre n'est pas dans les lettres disponibles, le mot ne peut pas être formé
+        if (index === -1) {
+            return false;
+        }
+
+        // Retirer la lettre utilisée de la copie de la main
+        lettresDisponibles.splice(index, 1);
+    }
+
+    return true;
+}
+
+
 
 
 
@@ -297,34 +332,43 @@ function poserQuestion(numero_ligne, joueur) {
             }
         });
     } else if (reponse1 == 2) {
-
-
-
-
         console.log('Vous avez choisi de modifier un mot');
         console.log('Pour revenir en arrière, tapez R');
-        rl.question('Entrez un mot : ', (reponse) => {
-            if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
-                console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
-                reponse=reponse.toString();
-                ajoutMotAGrille(plateaux[joueur], reponse, numero_ligne[joueur], mains[joueur]);
-                mains[joueur].push(tirerLettreAleatoire(pioche));
-                affichagePlateau(plateaux[joueur]);
-                numero_ligne[joueur] = numero_ligne[joueur] + 1;
-                poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
-            } else if (reponse == "R") {
-                poserQuestion(numero_ligne, joueur)
-            } else {
-                console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
-                poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
+// ...
+
+        rl.question('Entrez le numéro de la ligne que vous souhaitez modifier : ', (reponse) => {
+            // Vérifiez si la ligne existe
+            reponse = parseInt(reponse);
+            if (isNaN(reponse) || reponse < 0 || reponse >= numero_ligne[joueur]) {
+                console.log("Numéro de ligne invalide. Veuillez réessayer.");
+                poserQuestion(numero_ligne, joueur);
+                return;
             }
+
+            rl.question('Entrez le nouveau mot : ', (nouveauMot) => {
+
+                if (peutFormerMotAvecTransformation(mains[joueur], nouveauMot, plateaux[joueur][reponse])) {
+                    console.log(`Vous pouvez former le mot ${nouveauMot} avec les lettres de votre main et du mot existant.`);
+                    // Modifier le mot sur la ligne spécifiée
+                    plateaux[joueur][reponse] = nouveauMot;
+                    mains[joueur].push(tirerLettreAleatoire(pioche));
+                    affichagePlateau(plateaux[joueur]);
+                    poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
+                } else {
+                    console.log(`Vous ne pouvez pas former le mot ${nouveauMot} avec les lettres de votre main et du mot existant.`);
+                    poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
+                }
+            });
         });
-    }
+        // ...
+
     
     
     
     
-    else if (reponse1 == 3) {
+    
+    
+    } else if (reponse1 == 3) {
 
         console.log('Vous avez choisi de ne rien faire');
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
@@ -332,7 +376,8 @@ function poserQuestion(numero_ligne, joueur) {
 
 
 
-    } else {
+    } 
+    else {
         console.log('Vous devez entrer une réponse valide');
         poserQuestion(numero_ligne, joueur)
     } 
