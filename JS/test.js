@@ -150,7 +150,7 @@ function ajoutMotAGrille(grille, mot, ligne ,main) {
 
 function retirerLettreDeMain(main, lettre) {
     const index = main.indexOf(lettre);
-    if (index !== -1) {
+    if (index > -1) {
         main.splice(index, 1);
     }
 }
@@ -247,6 +247,15 @@ function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
     // Créer un ensemble des lettres du nouveau mot
     const ensembleLettresNouveauMot = new Set(nouveauMot);
 
+    let new_word = nouveauMot.slice()
+
+    let copi_motExistant = [...motExistant]
+
+    let ancien_mot = copi_motExistant.join('')
+    console.log("Voici le mot existant")
+    console.log(new_word)
+
+
     // Vérifier si toutes les lettres du mot existant sont présentes dans le nouveau mot
     for (const lettre of motExistant) {
         if (!ensembleLettresNouveauMot.has(lettre) && lettre !== '') {
@@ -270,8 +279,19 @@ function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
         // Retirer la lettre utilisée de la copie de la main
     }
 
+    // Retirer les lettres de ancien_mot de new_word
+    for (let j = 0; j < ancien_mot.length; j++) {
+        new_word = new_word.replace(ancien_mot[j], '');
+    }
+
+    // Retirer les lettres restantes de new_word de la main
+    for (let j = 0; j < new_word.length; j++) {
+        retirerLettreDeMain(main, new_word[j]);
+    }
+
     return true;
 }
+
 
 
 function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
@@ -387,8 +407,21 @@ function poserQuestion(numero_ligne, joueur) {
 
                 if (peutFormerMotAvecTransformation(mains[joueur], nouveauMot, plateaux[joueur][reponse])) {
                     console.log(`Vous pouvez former le mot ${nouveauMot} avec les lettres de votre main et du mot existant.`);
+                    let ancienMot = plateaux[joueur][reponse];
                     // Modifier le mot sur la ligne spécifiée
                     plateaux[joueur][reponse] = nouveauMot;
+                    let lettresAjoutees = nouveauMot.split('');
+                    for (let lettre of ancienMot) {
+                        let index = lettresAjoutees.indexOf(lettre);
+                        if (index !== -1) {
+                            lettresAjoutees.splice(index, 1);
+                        }
+                    }
+                
+                    // Supprimer les lettres ajoutées de la main du joueur
+                    for (let lettre of lettresAjoutees) {
+                        retirerLettreDeMain(mains[joueur], lettre);
+                    }
                     mains[joueur].push(tirerLettreAleatoire(pioche));
                     affichagePlateau(plateaux[joueur]);
                     poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
