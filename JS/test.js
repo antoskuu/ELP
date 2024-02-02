@@ -136,16 +136,14 @@ function ajoutMotAGrille(grille, mot, ligne ,main) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
     if (mot.length > 2 && mot.length <= grille[0].length) {
         // Vérifier si la ligne spécifiée est vide
-        if (grille[ligne].every(cellule => cellule === "" || cellule === undefined)) {
+        
             // Ajouter le mot à la ligne de la grille
             for (let i = 0; i < mot.length; i++) {
                 grille[ligne][i] = mot[i];
                 retirerLettreDeMain(main, mot[i]);
             }
             return true; // Mot ajouté avec succès
-        } else {
-            console.log("La ligne n'est pas vide. Choisissez une ligne vide.");
-        }
+        
     } 
 }
 
@@ -277,7 +275,45 @@ function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
 }
 
 
+function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
+    // Créer une copie de la main du joueur
+    let lettresDisponibles = main.slice();
 
+    // Créer un ensemble des lettres du nouveau mot
+    const ensembleLettresNouveauMot = new Set(nouveauMot);
+
+    // Vérifier si toutes les lettres du mot existant sont présentes dans le nouveau mot
+    for (const lettre of motExistant) {
+        if (!ensembleLettresNouveauMot.has(lettre) && lettre !== '') {
+            return false;
+        }
+    }
+
+    // Ajouter les lettres non vides du mot existant à la copie de la main
+    lettresDisponibles = lettresDisponibles.concat(motExistant.filter(lettre => lettre !== ''));
+
+    // Vérifier si le nouveau mot peut être formé en utilisant les lettres disponibles
+    for (let i = 0; i < nouveauMot.length; i++) {
+        const lettre = nouveauMot[i];
+        const index = lettresDisponibles.indexOf(lettre);
+
+        // Si la lettre n'est pas dans les lettres disponibles, le mot ne peut pas être formé
+        if (index === -1) {
+            return false;
+        }
+
+        // Retirer la lettre utilisée de la copie de la main
+        lettresDisponibles.splice(index, 1);
+    }
+
+    return true;
+}
+
+
+function jarnacSupprimerLigne(grille, reponse) {
+    grille.splice(reponse, 1);
+    grille.push(Array(9).fill(""));
+}
 
 
 
@@ -294,6 +330,9 @@ for (let i = 0; i < nombreDeJoueurs; i++) {
 }
 
 ligne=[1, 1]
+
+
+
 
 
 
@@ -360,23 +399,82 @@ function poserQuestion(numero_ligne, joueur) {
                 }
             });
         });
-        // ...
-
-    
-    
-    
-    
-    
     
     } else if (reponse1 == 3) {
 
-        console.log('Vous avez choisi de ne rien faire');
+        console.log('Vous avez choisi de passer votre tour');
+        letter=tirerLettreAleatoire(pioche);
+        console.log('Vous avez pioché la lettre ' + letter);
+        mains[joueur].push(letter);
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
         poserQuestion(numero_ligne, prochainJoueur);
 
 
+    } else if (reponse1 == 4)   {
+        console.log('Vous avez choisi de faire un JARNAC');
+        console.log('Pour revenir en arrière, tapez R');
+        rl.question('Quelle ligne voulez vous voler?', (reponse) => {
+            if (reponse=="R") {
+                poserQuestion(numero_ligne, joueur)
+            }
+            else if (parseInt(reponse)<= 0 || parseInt(reponse)>ligne[(joueur + 1) % nombreDeJoueurs]) {
+                console.log('Vous devez entrer une réponse valide');
+                poserQuestion(numero_ligne, joueur)
+            }
 
-    } 
+            else if (parseInt(reponse)> 0 && parseInt(reponse)<=ligne[(joueur + 1) % nombreDeJoueurs]){
+            main_temporaire=[]
+            longueur=0
+            for (let element of plateaux[(joueur + 1) % nombreDeJoueurs][reponse]) {
+                if (element !== "") {
+                    longueur++;
+                    main_temporaire.push(element);
+                }
+            }
+            for (let element of mains[(joueur + 1) % nombreDeJoueurs]) {
+                main_temporaire.push(element);
+            }
+            console.log(`Vous devez former un mot de plus de ${longueur} lettres avec:`);
+            console.log(main_temporaire);
+            rl.question('Quel mot formez vous?', (reponse2) => {
+              if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
+               { ajoutMotAGrille(plateaux[joueur], reponse2, ligne[joueur], main_temporaire);
+
+                jarnacSupprimerLigne(plateaux[(joueur + 1) % nombreDeJoueurs], reponse);
+
+                console.log(`Vous avez volé la ligne ${reponse} et formé le mot ${reponse2}`);
+                console.log(`Voici votre nouveau plateau:`);
+                affichagePlateau(plateaux[joueur]);
+                console.log(`Voici le plateau de l'adversaire:`);
+                affichagePlateau(plateaux[(joueur + 1) % nombreDeJoueurs]);
+                numero_ligne[joueur] = numero_ligne[joueur] + 1;
+                numero_ligne[(joueur + 1) % nombreDeJoueurs] = numero_ligne[(joueur + 1) % nombreDeJoueurs] - 1;
+                poserQuestion(numero_ligne, joueur)
+              }
+              else { 
+                console.log("Le nouveau mot n'est pas plus long que l'ancien");
+                poserQuestion(numero_ligne, joueur)}
+            });
+            }
+
+            else {
+                console.log('Vous devez entrer une réponse valide');
+                poserQuestion(numero_ligne, joueur)
+                
+            } 
+
+
+
+        
+        // else if (reponse == "R") {
+        //     poserQuestion(numero_ligne, joueur)
+        // }
+    });
+
+    }
+    
+    
+    
     else {
         console.log('Vous devez entrer une réponse valide');
         poserQuestion(numero_ligne, joueur)
