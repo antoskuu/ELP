@@ -1,0 +1,30 @@
+Joueur 1 a formé le mot MDW avec les lettres de sa main.
+Joueur 1 a pioché la lettre L.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre I.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre L.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre F.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre Z.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre M.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre E.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre E.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre N.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre E.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre B.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre S.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre S.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre C.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre Q.

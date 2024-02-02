@@ -13,6 +13,8 @@ fs.writeFile('historique.txt', '', err => {
 //création de la pioche
 const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
 
+
+
 function creerPioche(entrée) {
     const pioche = [];
     const parties = entrée.split(' ');
@@ -367,7 +369,7 @@ function calculPoints(plateau1) {
 
 function poserQuestion(numero_ligne, joueur) {
 
-    // console.log(plateaux[joueur])
+    
     if (jeuEstTermine(plateaux[joueur])) {
         console.log("Le jeu est terminé. Le joueur " + (joueur + 1) + " a rempli toute sa grille!");
         console.log("Le joueur 1 a marqué " + calculPoints(plateaux[0]) + " points.");
@@ -375,11 +377,14 @@ function poserQuestion(numero_ligne, joueur) {
         rl.close();
         return;
     }
-
+    console.clear();
     console.log(`C'est au tour du joueur ${joueur + 1}.`);
 
     console.log(`Voici votre main : ${mains[joueur]}`);
-
+    console.log(`Voici votre plateau : `);
+    affichagePlateau(plateaux[joueur]);
+    console.log(`Voici le plateau de l'adversaire : `);
+    affichagePlateau(plateaux[(joueur + 1) % nombreDeJoueurs]);
     rl.question('Tapez:\n 1 pour mettre un mot, \n 2 pour en modifier un, \n 3 pour ne rien faire, \n 4 pour JARNAC! \n ', (reponse1) => {
 
 
