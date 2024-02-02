@@ -359,7 +359,8 @@ function poserQuestion(numero_ligne, joueur) {
             console.log(`Vous devez former un mot de plus de ${longueur} lettres avec:`);
             console.log(main_temporaire);
             rl.question('Quel mot formez vous?', (reponse2) => {
-              if (reponse2.length>longueur) {
+              if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
+               { ajoutMotAGrille(plateaux[joueur], reponse2, reponse, main_temporaire);
               }
               else { 
                 console.log("Le nouveau mot n'est pas plus long que l'ancien");
