@@ -240,7 +240,10 @@ const rl = readline.createInterface({
 // }
 
 
-
+function jarnacSupprimerLigne(grille, reponse) {
+    grille.splice(reponse, 1);
+    grille.push(Array(9).fill(""));
+}
 
 
 
@@ -257,6 +260,9 @@ for (let i = 0; i < nombreDeJoueurs; i++) {
 }
 
 ligne=[1, 1]
+
+
+
 
 
 
@@ -324,7 +330,10 @@ function poserQuestion(numero_ligne, joueur) {
     
     else if (reponse1 == 3) {
 
-        console.log('Vous avez choisi de ne rien faire');
+        console.log('Vous avez choisi de passer votre tour');
+        letter=tirerLettreAleatoire(pioche);
+        console.log('Vous avez pioché la lettre ' + letter);
+        mains[joueur].push(letter);
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
         poserQuestion(numero_ligne, prochainJoueur);
 
@@ -359,11 +368,16 @@ function poserQuestion(numero_ligne, joueur) {
             rl.question('Quel mot formez vous?', (reponse2) => {
               if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
                { ajoutMotAGrille(plateaux[joueur], reponse2, ligne[joueur], main_temporaire);
-                
+
+                jarnacSupprimerLigne(plateaux[(joueur + 1) % nombreDeJoueurs], reponse);
+
                 console.log(`Vous avez volé la ligne ${reponse} et formé le mot ${reponse2}`);
                 console.log(`Voici votre nouveau plateau:`);
                 affichagePlateau(plateaux[joueur]);
+                console.log(`Voici le plateau de l'adversaire:`);
+                affichagePlateau(plateaux[(joueur + 1) % nombreDeJoueurs]);
                 numero_ligne[joueur] = numero_ligne[joueur] + 1;
+                numero_ligne[(joueur + 1) % nombreDeJoueurs] = numero_ligne[(joueur + 1) % nombreDeJoueurs] - 1;
                 poserQuestion(numero_ligne, joueur)
               }
               else { 
