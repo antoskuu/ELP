@@ -451,16 +451,31 @@ for (let i = 0; i < nombreDeJoueurs; i++) {
 ligne=[1, 1]
 
 
-
-
-
+function calculPoints(plateau1) {
+    let points1 = 0;
+    
+    for (let i = 1; i < plateau1.length; i++) {
+        compteur=0
+        for (let j = 1; j < plateau1[i].length; j++) {
+            if (plateau1[i][j] !== ``) {
+                compteur++;
+            }
+        
+        }
+        points1 = points1 + plateau1[0][compteur];
+        
+    }
+    return points1;   
+}
 
 
 function poserQuestion(numero_ligne, joueur) {
 
     // console.log(plateaux[joueur])
     if (jeuEstTermine(plateaux[joueur])) {
-        console.log("Le jeu est terminé.");
+        console.log("Le jeu est terminé. Le joueur " + (joueur + 1) + " a rempli toute sa grille!");
+        console.log("Le joueur 1 a marqué " + calculPoints(plateaux[0]) + " points.");
+        console.log("Le joueur 2 a marqué " + calculPoints(plateaux[1]) + " points.");
         rl.close();
         return;
     }
