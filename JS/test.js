@@ -255,20 +255,30 @@ function retirerLettreDeMain(main, lettre) {
     }
 }
 
-function jeuEstTermine(grille) {
-    // Parcourir chaque ligne de la grille
-    for (let ligne of grille) {
-        // Si la ligne contient une cellule vide, retourner false
-        if (ligne.includes("") || ligne.includes(undefined)) {
-            return false;
-        }
+// function jeuEstTermine(grille) {
+//     // Parcourir chaque ligne de la grille
+//     for (let ligne of grille) {
+//         // Si la ligne contient une cellule vide, retourner false
+//         if (ligne.includes("") || ligne.includes(undefined)) {
+//             return false;
+//         }
+//     }
+
+//     // Si aucune ligne ne contient de cellule vide, retourner true
+//     return true;
+// }
+
+function jeuEstTermine(listeDeListes) {
+    // Obtenez la dernière liste de la liste de listes
+    let derniereListe = listeDeListes[listeDeListes.length - 1];
+
+    // Vérifiez si le premier élément de la dernière liste est différent de ' '
+    if (derniereListe[0] !== '') {
+        return true;''
     }
 
-    // Si aucune ligne ne contient de cellule vide, retourner true
-    return true;
+    return false;
 }
-
-
 
 
 
@@ -448,7 +458,7 @@ ligne=[1, 1]
 
 function poserQuestion(numero_ligne, joueur) {
 
-
+    // console.log(plateaux[joueur])
     if (jeuEstTermine(plateaux[joueur])) {
         console.log("Le jeu est terminé.");
         rl.close();

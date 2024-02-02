@@ -1,16 +1,82 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-Joueur 1 a formé le mot CUC avec les lettres de sa main.
-Joueur 1 a pioché la lettre P.
-Joueur 1 a remplacé le mot CUC de la ligne 1 en CUCH.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre B.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre K.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre U.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre B.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre C.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre D.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre Q.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre L.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre Z.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre C.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre B.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre G.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre S.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre H.
+Joueur 1 a passé son tour.
 Joueur 1 a pioché la lettre N.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre G.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre N.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre Z.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre S.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre L.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre E.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre M.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre D.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre C.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre R.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre B.
 Joueur 1 a passé son tour.
 Joueur 1 a pioché la lettre M.
-Joueur 2 a volé la ligne 1 et a formé le mot CUCHR.
-=======
-Joueur 1 a formé le mot RQN avec les lettres de sa main.
-=======
-Joueur 1 a formé le mot NNFW avec les lettres de sa main.
->>>>>>> f6e44d93ffb72e126b7343c552e234381d366c70
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre D.
 Joueur 1 a passé son tour.
->>>>>>> 2f603bd6ff7142a4f09ddbbbbe3c4acd67211fd4
+Joueur 1 a pioché la lettre E.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre R.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre D.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre X.
+Joueur 1 a passé son tour.
+Joueur 1 a pioché la lettre G.
+Joueur 2 a passé son tour.
+Joueur 2 a pioché la lettre N.
+Joueur 1 a formé le mot FYL avec les lettres de sa main.
+Joueur 1 a pioché la lettre R.
+Joueur 1 a formé le mot SNS avec les lettres de sa main.
+Joueur 1 a pioché la lettre O.
+Joueur 1 a formé le mot SBU avec les lettres de sa main.
+Joueur 1 a pioché la lettre L.
+Joueur 1 a formé le mot CQZ avec les lettres de sa main.
+Joueur 1 a pioché la lettre M.
+Joueur 1 a formé le mot BSN avec les lettres de sa main.
+Joueur 1 a pioché la lettre L.
+Joueur 1 a formé le mot NSE avec les lettres de sa main.
+Joueur 1 a pioché la lettre R.
+Joueur 1 a formé le mot DRM avec les lettres de sa main.
+Joueur 1 a pioché la lettre H.
