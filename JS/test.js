@@ -395,8 +395,10 @@ function poserQuestion(numero_ligne, joueur) {
                 ecrireDansFichier(`Joueur ${joueur + 1} a formé le mot ${reponse} avec les lettres de sa main.`)
                 reponse=reponse.toString();
                 ajoutMotAGrille(plateaux[joueur], reponse, numero_ligne[joueur], mains[joueur]);
-                mains[joueur].push(tirerLettreAleatoire(pioche));
-                console.log("lettre au hasard: ");
+                letter=tirerLettreAleatoire(pioche);
+                console.log('Vous avez pioché la lettre ' + letter);
+                mains[joueur].push(letter);
+                ecrireDansFichier(`Joueur ${joueur + 1} a pioché la lettre ${letter}.`)
                 affichagePlateau(plateaux[joueur]);
                 numero_ligne[joueur] = numero_ligne[joueur] + 1;
                 poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
@@ -441,7 +443,10 @@ function poserQuestion(numero_ligne, joueur) {
                     for (let lettre of lettresAjoutees) {
                         retirerLettreDeMain(mains[joueur], lettre);
                     }
-                    mains[joueur].push(tirerLettreAleatoire(pioche));
+                    letter=tirerLettreAleatoire(pioche);
+                    console.log('Vous avez pioché la lettre ' + letter);
+                    mains[joueur].push(letter);
+                    ecrireDansFichier(`Joueur ${joueur + 1} a pioché la lettre ${letter}.`)
                     affichagePlateau(plateaux[joueur]);
                     poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
                 } else {
@@ -457,6 +462,7 @@ function poserQuestion(numero_ligne, joueur) {
         letter=tirerLettreAleatoire(pioche);
         console.log('Vous avez pioché la lettre ' + letter);
         mains[joueur].push(letter);
+        ecrireDansFichier(`Joueur ${joueur + 1} a pioché la lettre ${letter}.`)
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
         affichagePlateau(plateaux[(joueur+1)%2]);
         poserQuestion(numero_ligne, prochainJoueur);
@@ -488,13 +494,14 @@ function poserQuestion(numero_ligne, joueur) {
             }
             console.log(`Vous devez former un mot de plus de ${longueur} lettres avec:`);
             console.log(main_temporaire);
-            rl.question('Quel mot formez vous?', (reponse2) => {
+            rl.question('Quel mot formez vous? ', (reponse2) => {
               if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
                { ajoutMotAGrille(plateaux[joueur], reponse2, numero_ligne[joueur], main_temporaire);
 
                 jarnacSupprimerLigne(plateaux[(joueur + 1) % nombreDeJoueurs], reponse);
 
                 console.log(`Vous avez volé la ligne ${reponse} et formé le mot ${reponse2}`);
+                ecrireDansFichier(`Joueur ${joueur + 1} a volé la ligne ${reponse} et a formé le mot ${reponse2}.`)
                 console.log(`Voici votre nouveau plateau:`);
                 affichagePlateau(plateaux[joueur]);
                 console.log(`Voici le plateau de l'adversaire:`);
