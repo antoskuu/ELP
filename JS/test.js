@@ -1,4 +1,4 @@
-//création de la pioche
+
 
 const fs = require('fs');
 
@@ -10,6 +10,7 @@ fs.writeFile('historique.txt', '', err => {
     // Le fichier est maintenant vide
 });
 
+//création de la pioche
 const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
 
 function creerPioche(entrée) {
