@@ -16,7 +16,7 @@ git clone https://github.com/antoskuu/ELP.git
 cd ELP/JS
 ```
 
-3) Lancez le jeu :
+3) Lancer le jeu :
 
 ``` bash
 node jarnac.js
