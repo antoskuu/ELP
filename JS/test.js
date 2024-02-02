@@ -1,5 +1,15 @@
 //création de la pioche
 
+const fs = require('fs');
+
+fs.writeFile('historique.txt', '', err => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    // Le fichier est maintenant vide
+});
+
 const entree = "4A 4B 7C 5D 19E 2F 4G 2H 11I 1J 1K 6L 5M 9N 8O 4P 1Q 10R 7S 9T 8U 2V 1W 1X 1Y 2Z";
 
 function creerPioche(entrée) {
@@ -16,7 +26,11 @@ function creerPioche(entrée) {
 
 const pioche = creerPioche(entree);
 
-
+function ecrireDansFichier(texte) {
+    fs.appendFile('historique.txt', texte + '\n', (err) => {
+        if (err) throw err;
+    });
+}
 
 function tirerLettreAleatoire(pioche) {
     let lettresDisponibles = pioche.filter(item => item.quantite > 0);
@@ -358,6 +372,7 @@ ligne=[1, 1]
 
 function poserQuestion(numero_ligne, joueur) {
 
+
     if (jeuEstTermine(plateaux[joueur])) {
         console.log("Le jeu est terminé.");
         rl.close();
@@ -365,6 +380,7 @@ function poserQuestion(numero_ligne, joueur) {
     }
 
     console.log(`C'est au tour du joueur ${joueur + 1}.`);
+
     console.log(`Voici votre main : ${mains[joueur]}`);
 
     rl.question('Tapez:\n 1 pour mettre un mot, \n 2 pour en modifier un, \n 3 pour ne rien faire, \n 4 pour JARNAC! \n ', (reponse1) => {
@@ -376,9 +392,11 @@ function poserQuestion(numero_ligne, joueur) {
         rl.question('Entrez un mot : ', (reponse) => {
             if (peutFormerMot(mains[joueur], reponse, plateaux[joueur])) {
                 console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
+                ecrireDansFichier(`Joueur ${joueur + 1} a formé le mot ${reponse} avec les lettres de sa main.`)
                 reponse=reponse.toString();
                 ajoutMotAGrille(plateaux[joueur], reponse, numero_ligne[joueur], mains[joueur]);
                 mains[joueur].push(tirerLettreAleatoire(pioche));
+                console.log("lettre au hasard: ");
                 affichagePlateau(plateaux[joueur]);
                 numero_ligne[joueur] = numero_ligne[joueur] + 1;
                 poserQuestion(numero_ligne, joueur); // Appeler poserQuestion à nouveau pour le prochain tour
@@ -404,10 +422,11 @@ function poserQuestion(numero_ligne, joueur) {
             }
 
             rl.question('Entrez le nouveau mot : ', (nouveauMot) => {
-
                 if (peutFormerMotAvecTransformation(mains[joueur], nouveauMot, plateaux[joueur][reponse])) {
                     console.log(`Vous pouvez former le mot ${nouveauMot} avec les lettres de votre main et du mot existant.`);
                     let ancienMot = plateaux[joueur][reponse];
+                    let ancienMotString = ancienMot.join('');
+                    ecrireDansFichier(`Joueur ${joueur + 1} a remplacé le mot ${ancienMotString} de la ligne ${reponse} en ${nouveauMot}.`)
                     // Modifier le mot sur la ligne spécifiée
                     plateaux[joueur][reponse] = nouveauMot;
                     let lettresAjoutees = nouveauMot.split('');
@@ -433,12 +452,13 @@ function poserQuestion(numero_ligne, joueur) {
         });
     
     } else if (reponse1 == 3) {
-
+        ecrireDansFichier(`Joueur ${joueur + 1} a passé son tour.`);
         console.log('Vous avez choisi de passer votre tour');
         letter=tirerLettreAleatoire(pioche);
         console.log('Vous avez pioché la lettre ' + letter);
         mains[joueur].push(letter);
         let prochainJoueur = (joueur + 1) % nombreDeJoueurs;
+        affichagePlateau(plateaux[(joueur+1)%2]);
         poserQuestion(numero_ligne, prochainJoueur);
 
 
