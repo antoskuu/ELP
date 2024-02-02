@@ -268,27 +268,6 @@ function jeuEstTermine(grille) {
     return true;
 }
 
-// function poserQuestion(numero_tour, numero_plateau) {
-//     if (jeuEstTermine(numero_tour)) {
-//         console.log("Le jeu est terminé.");
-//         rl.close();
-//         return;
-//     }
-
-//     rl.question('Entrez un mot : ', (reponse) => {
-//         if (peutFormerMot(main1, reponse, numero_plateau)) {
-//             console.log(`Vous pouvez former le mot ${reponse} avec les lettres de votre main.`);
-//             reponse=reponse.toString();
-//             ajoutMotAGrille(numero_plateau, reponse, numero_tour);
-//             console.log("lettre au hasard: " + tirerLettreAleatoire(pioche));
-//             affichagePlateau(numero_plateau);
-//             poserQuestion(numero_tour + 1, numero_plateau); // Appeler poserQuestion à nouveau pour le prochain tour
-//         } else {
-//             console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
-//             poserQuestion(numero_tour, numero_plateau);
-//         }
-//     });
-// }
 
 
 
