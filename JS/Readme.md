@@ -4,7 +4,7 @@ Bienvenue dans le monde captivant de Jarnac, un jeu de mots passionnant impléme
 
 ## Comment jouer
 
-1) Clonez le github sur votre machine :
+1) Cloner le github sur votre machine :
 
 ``` bash
 git clone https://github.com/antoskuu/ELP.git
@@ -16,7 +16,7 @@ git clone https://github.com/antoskuu/ELP.git
 cd ELP/JS
 ```
 
-3) Lancez le jeu :
+3) Lancer le jeu :
 
 ``` bash
 node jarnac.js
