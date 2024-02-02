@@ -136,16 +136,14 @@ function ajoutMotAGrille(grille, mot, ligne ,main) {
     // Vérifier si la longueur du mot est supérieure à 3 et inférieure à la taille maximale de la grille
     if (mot.length > 2 && mot.length <= grille[0].length) {
         // Vérifier si la ligne spécifiée est vide
-        if (grille[ligne].every(cellule => cellule === "" || cellule === undefined)) {
+        
             // Ajouter le mot à la ligne de la grille
             for (let i = 0; i < mot.length; i++) {
                 grille[ligne][i] = mot[i];
                 retirerLettreDeMain(main, mot[i]);
             }
             return true; // Mot ajouté avec succès
-        } else {
-            console.log("La ligne n'est pas vide. Choisissez une ligne vide.");
-        }
+        
     } 
 }
 
@@ -360,7 +358,13 @@ function poserQuestion(numero_ligne, joueur) {
             console.log(main_temporaire);
             rl.question('Quel mot formez vous?', (reponse2) => {
               if (reponse2.length>longueur && peutFormerMot(main_temporaire, reponse2, plateaux[joueur]))
-               { ajoutMotAGrille(plateaux[joueur], reponse2, reponse, main_temporaire);
+               { ajoutMotAGrille(plateaux[joueur], reponse2, ligne[joueur], main_temporaire);
+                
+                console.log(`Vous avez volé la ligne ${reponse} et formé le mot ${reponse2}`);
+                console.log(`Voici votre nouveau plateau:`);
+                affichagePlateau(plateaux[joueur]);
+                numero_ligne[joueur] = numero_ligne[joueur] + 1;
+                poserQuestion(numero_ligne, joueur)
               }
               else { 
                 console.log("Le nouveau mot n'est pas plus long que l'ancien");
