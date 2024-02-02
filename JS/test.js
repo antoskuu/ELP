@@ -122,33 +122,6 @@ const maGrille = grilleInit("");
 
 
 
-
-
-// function peutFormerMot(lettres, mot, grille) {
-//     if (mot.length > 2 && mot.length <= 9) {
-//         console.log("mot.length "+mot.length)
-//         let copieLettres = [...lettres]; // Créer une copie de la liste de lettres pour ne pas la modifier
-//     for (let lettre of mot) {
-//         let index = copieLettres.indexOf(lettre);
-//         if (index === -1) {
-//             // Si la lettre n'est pas dans la liste, retourner false
-//             console.log("premier")
-//             return false;
-//         } else {
-//             // Sinon, supprimer la lettre de la liste
-//             copieLettres.splice(index, 1);
-//         }
-//     }
-//     return true;
-//         } else {
-        
-//         console.log("La longueur du mot ne satisfait pas les conditions.");
-//         return false; // Le mot n'a pas été ajouté
-        
-//     }
-    
-// }
-    
 function peutFormerMot(lettres, mot) {
     if (mot.length > 2 && mot.length <= 9) {
         for (let lettre of mot) {
@@ -181,48 +154,7 @@ function ajoutMotAGrille(grille, mot, ligne ,main) {
     } 
 }
 
-// function ajoutMotAGrilleJarnac(grille, mot, ligne, mot_de_base, main_joueur) {
-//     // Vérifiez si mot_de_base est une sous-chaîne de mot
-//     if (mot.includes(mot_de_base)) {
-//         // Obtenez les lettres supplémentaires dans mot
-//         let lettresSupplementaires = mot.replace(new RegExp(`[${mot_de_base}]`, 'g'), '');
-        
-//         // Vérifiez si toutes les lettres supplémentaires sont dans main_joueur
-//         for (let lettre of lettresSupplementaires) {
-//             if (!main_joueur.includes(lettre)) {
-//                 return false; // Si une lettre n'est pas dans main_joueur, ne faites rien et quittez la fonction
-//             }
-//         }
 
-//         // Si toutes les lettres supplémentaires sont dans main_joueur, ajoutez mot à grille
-//         grille[ligne] = mot;
-//         return true
-//     }
-// }
-// function ajoutMotAGrilleJarnac(grille, mot, ligne, mot_de_base, main_joueur) {
-//     // Convertir mot_de_base en une chaîne pour la recherche de sous-chaîne
-//     let mot_de_base_str = mot_de_base.join('');
-
-//     // Vérifiez si mot_de_base est une sous-chaîne de mot
-//     if (mot.includes(mot_de_base_str)) {
-//         // Obtenez les lettres supplémentaires dans mot
-//         let lettresSupplementaires = mot.split('').filter(lettre => !mot_de_base.includes(lettre));
-        
-//         // Vérifiez si toutes les lettres supplémentaires sont dans main_joueur
-//         for (let lettre of lettresSupplementaires) {
-//             if (!main_joueur.includes(lettre)) {
-//                 return false; // Si une lettre n'est pas dans main_joueur, ne faites rien et quittez la fonction
-//             }
-//         }
-
-//         // Si toutes les lettres supplémentaires sont dans main_joueur, ajoutez mot à grille
-//         grille[ligne] = mot;
-//         return true;
-//     }
-
-//     // Si mot ne contient pas mot_de_base, retourner false
-//     return false;
-// }
 function ajoutMotAGrilleJarnac(grille, mot, ligne, mot_de_base, main_joueur) {
     // Convertir mot_de_base en une chaîne pour la recherche de sous-chaîne
     let mot_de_base_str = mot_de_base.join('');
@@ -255,18 +187,6 @@ function retirerLettreDeMain(main, lettre) {
     }
 }
 
-// function jeuEstTermine(grille) {
-//     // Parcourir chaque ligne de la grille
-//     for (let ligne of grille) {
-//         // Si la ligne contient une cellule vide, retourner false
-//         if (ligne.includes("") || ligne.includes(undefined)) {
-//             return false;
-//         }
-//     }
-
-//     // Si aucune ligne ne contient de cellule vide, retourner true
-//     return true;
-// }
 
 function jeuEstTermine(listeDeListes) {
     // Obtenez la dernière liste de la liste de listes
@@ -282,25 +202,11 @@ function jeuEstTermine(listeDeListes) {
 
 
 
-
-
-
 function tirageMain(main) {
     for (let i = 0; i < 7; i++) {
         main.push(tirerLettreAleatoire(pioche));
     }
 }
-
-// tirageMain(main1);
-
-// console.log(main1);
-// const readline = require('readline');
-
-
-// affichagePlateau(plateau1);
-
-// poserQuestion(1, plateau1);
-
 
 
 plateau1=grilleInit("")
@@ -316,17 +222,6 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-// let mains = [];
-// let nombreDeJoueurs = 2; // Remplacez par le nombre de joueurs que vous voulez
-
-
-
-
-// // Initialiser les mains pour chaque joueur
-// for (let i = 0; i < nombreDeJoueurs; i++) {
-//     mains[i] = [];
-//     tirageMain(mains[i]);
-// }
 
 
 function peutFormerMotAvecTransformation(main, nouveauMot, motExistant) {
@@ -646,12 +541,6 @@ function poserQuestion(numero_ligne, joueur) {
                 
             } 
 
-
-
-        
-        // else if (reponse == "R") {
-        //     poserQuestion(numero_ligne, joueur)
-        // }
     });
 
     }
