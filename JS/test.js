@@ -506,7 +506,7 @@ function poserQuestion(numero_ligne, joueur) {
             } else if (reponse == "R") {
                 poserQuestion(numero_ligne, joueur)
             } else {
-                console.log(`Vous ne pouvez pas former le mot ${reponse} avec les lettres de votre main.`);
+                console.log(`Erreur: le mot doit être de 3 à 9 lettres et doit être formé avec les lettres de votre main.`);
                 poserQuestion(numero_ligne, joueur); // Si le mot n'est pas valide, le même joueur essaie à nouveau
             }
         });
