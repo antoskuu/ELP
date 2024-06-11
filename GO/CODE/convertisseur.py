@@ -7,7 +7,7 @@ def convert_and_increment(grid):
         row = rows[i].split()
 
     #décommenter la ligne suivante pour unr grille 16x16
-        #row = [str(int(num, 16) + 1) if num != '*' else '0' for num in row]
+        row = [str(int(num, 16) + 1) if num != '*' else '0' for num in row]
 
         row_str = ', '.join(row)
 
@@ -18,15 +18,22 @@ def convert_and_increment(grid):
     return result
 
 
-input_grid = """5  0  0   0  0  4   0  7  0 
-0  1  0   6  0  0   3  0  0 
-0  0  8   0  1  0   0  0  2 
-0  0  5   0  8  0   0  0  0 
-0  2  0   5  0  0   0  0  0 
-9  0  0   0  0  2   0  0  0 
-0  0  3   0  0  0   0  0  9 
-0  6  0   1  0  0   5  0  0 
-8  0  0   0  0  7   0  4  0 """
+input_grid = """*  *  *  1   *  *  *  F   *  8  6  *   *  *  C  2 
+7  *  4  *   *  *  *  B   0  *  *  5   *  *  9  * 
+*  *  *  F   *  *  *  *   9  3  *  4   *  7  E  * 
+*  *  5  *   6  *  *  *   7  *  D  1   0  *  4  * 
+*  *  3  9   *  *  *  *   *  *  B  2   *  *  0  8 
+2  *  *  D   C  4  *  *   *  *  *  8   *  *  *  7 
+8  *  *  *   *  B  *  A   E  *  C  *   4  *  *  * 
+4  C  *  *   2  3  7  *   *  *  *  *   *  1  *  * 
+D  4  8  *   A  *  5  C   *  2  9  *   F  *  7  B 
+9  0  *  *   E  1  *  *   *  4  *  *   D  C  A  * 
+*  *  2  *   *  D  *  *   *  *  *  *   8  *  *  * 
+*  3  *  *   4  *  6  9   *  E  *  *   *  *  *  * 
+*  *  *  *   *  6  *  5   F  9  *  *   *  *  *  * 
+*  *  1  *   B  7  *  *   *  *  *  *   *  *  D  0 
+*  5  *  *   *  *  E  *   B  *  4  D   9  6  *  * 
+*  *  *  C   1  *  *  *   *  *  *  E   *  *  5  F """
 
 result = convert_and_increment(input_grid)
 print(result)
